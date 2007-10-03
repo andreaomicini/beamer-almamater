@@ -75,3 +75,7 @@ naming CesenaSMA2006; only the file names changed, which the *Sistemi
 Distribuiti L-A* decks of 2007/2008 (`…/2007:2008/SD-LA/slides/`) and of
 2008/2009 (`…/2008:2009/SD-L/slides/`) load. Tags `cesena-sd-2008` and
 `cesena-sd-2009`; one archive copy of each, identical.
+
+`beamerthemeCesenaSD2010.sty` (file date 2007-10-03): the same bytes again, loaded by
+the *Sistemi Distribuiti L* decks of 2009/2010 (`…/2009:2010/SD L/slides/`). Tag
+`cesena-sd-2010`.
