@@ -68,3 +68,10 @@ The name `AMSCesena` of this repository is not the 2010 `AMSCesena`, the red
 theme over `beaver`, which survives as the branch `cesena` of
 [beamer-AMSRedGrey](https://github.com/andreaomicini/beamer-AMSRedGrey), tag
 `cesena-1.0`.
+
+`beamerthemeCesenaSD2008.sty` and `beamerthemeCesenaSD2009.sty` (their file
+date 2007-10-03): the same bytes as CesenaSMA2007, its RCS header still
+naming CesenaSMA2006; only the file names changed, which the *Sistemi
+Distribuiti L-A* decks of 2007/2008 (`…/2007:2008/SD-LA/slides/`) and of
+2008/2009 (`…/2008:2009/SD-L/slides/`) load. Tags `cesena-sd-2008` and
+`cesena-sd-2009`; one archive copy of each, identical.
