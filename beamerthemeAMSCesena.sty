@@ -8,8 +8,6 @@
 
 \mode<presentation>
 
-\beamertemplatenavigationsymbolsempty 
-
 \useoutertheme{infolines}
 \useinnertheme[shadow=true]{rounded}
 \usecolortheme{beaver}
@@ -28,7 +26,7 @@
 \setbeamercolor{block body alerted}{parent=normal text,use=block title alerted,bg=block title gray!15!white}
 \setbeamercolor{block body example}{parent=normal text,use=block title example,bg=block title gray!20!white}
 
-%\renewcommand{\emph}[1]{\textcolor{darkerred!75!black}{\textit{#1}}}
+\renewcommand{\emph}[1]{\textcolor{darkerred!75!black}{\textit{#1}}}
 
 \pgfdeclareimage[width=\paperwidth]{bg}{img/almacesena-background}
 \setbeamertemplate{background}{\pgfuseimage{bg}}
