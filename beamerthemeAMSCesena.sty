@@ -8,6 +8,8 @@
 
 \mode<presentation>
 
+\setbeamertemplate{navigation symbols}{}
+
 \useoutertheme{infolines}
 \useinnertheme[shadow=true]{rounded}
 \usecolortheme{beaver}
@@ -15,6 +17,13 @@
 \definecolor{darkred}{rgb}{0.80,0,0.10}
 \definecolor{darkerred}{rgb}{0.75,0,0.10}
 \definecolor{darkestred}{rgb}{0.60,0,0.0}
+
+\newenvironment<>{alertb}[1]{%
+  \setbeamercolor{block title}{fg=white,bg=orange!85!black}%
+  \begin{block}#2{#1}}{\end{block}}
+\newenvironment<>{exampleb}[1]{%
+  \setbeamercolor{block title}{fg=white,bg=gray!80!black}%
+  \begin{block}#2{#1}}{\end{block}}
 
 \setbeamercolor*{item}{fg=darkestred}
 
@@ -26,7 +35,7 @@
 \setbeamercolor{block body alerted}{parent=normal text,use=block title alerted,bg=block title gray!15!white}
 \setbeamercolor{block body example}{parent=normal text,use=block title example,bg=block title gray!20!white}
 
-\renewcommand{\emph}[1]{\textcolor{darkerred!75!black}{\textit{#1}}}
+%\renewcommand{\emph}[1]{\textcolor{darkerred!75!black}{\textit{#1}}}
 
 \pgfdeclareimage[width=\paperwidth]{bg}{img/almacesena-background}
 \setbeamertemplate{background}{\pgfuseimage{bg}}
