@@ -1,0 +1,67 @@
+% v. 1.1 Copyright 2020 by Andrea Omicini <andrea.omicini@unibo.it>
+%
+% This program can be redistributed and/or modified under the terms
+% of the GNU Public License, version 2.
+\mode<presentation>
+%
+\setbeamertemplate{navigation symbols}{}
+%
+\useoutertheme{infolines}
+\useinnertheme[shadow=true]{rounded}
+%%% TO UNCOMMENT FOR LOCAL DIR
+\usecolortheme{bbspurpleandgold}
+%% Alma Logo
+\pgfdeclareimage[interpolate=true,width=.3\paperwidth]{logo}{img/almabbs-background}
+\logo{\pgfuseimage{logo}}
+%\setbeamertemplate{background}{\pgfuseimage{logo}}
+% text
+\setbeamercolor{normal text}{fg=bbspurple!10!black}
+\setbeamercolor{alerted text}{fg=bbspurple!90!black}
+\setbeamercolor{quote}{fg=bbspurple!80!white}
+% bullets
+\setbeamercolor*{item}{fg=gold(metallic)}
+% front page
+\setbeamercolor{title}{fg=bbspurple!90!black}
+\setbeamercolor{subtitle}{fg=bbspurple!90!white}
+\setbeamercolor{author}{fg=gold(metallic)!90!black}
+\setbeamercolor{institute}{fg=bbspurple!75!black}
+\setbeamercolor{date}{fg=bbspurple!75!white}
+% block header
+\setbeamercolor{block title}{use=structure,fg=palegoldenrod!90!white,bg=bbspurple!55!black}
+\setbeamercolor{block title alerted}{use=alerted text,fg=palegoldenrod!50!white,bg=bbspurple!35!black}
+\setbeamercolor{block title example}{use=example text,fg=bbspurple!30!black,bg=bbspurple!30!white}
+% block body
+\setbeamercolor{block body}{parent=normal text,use=block title,bg=bbspurple!2!white}
+\setbeamercolor{block body alerted}{parent=normal text,use=block title alerted,bg=bbspurple!5!white}
+\setbeamercolor{block body example}{parent=normal text,use=block title example,bg=bbspurple!7!white}
+% table of content
+\setbeamercolor{section in toc}{fg=bbspurple!40!black}
+\setbeamercolor{subsection in toc}{fg=bbspurple!50!black}
+% footnote
+\setbeamercolor{footnote mark}{fg=gold(metallic)!90!black}
+\setbeamercolor{footnote}{fg=bbspurple!25!gray}
+% biblio
+\setbeamertemplate{bibliography item}{\insertbiblabel}
+\setbeamercolor{bibliography entry author}{fg=gold(metallic)!75!black}
+\setbeamercolor{bibliography entry title}{fg=bbspurple!90!black} 
+\setbeamercolor{bibliography entry location}{fg=bbspurple!50!black} 
+\setbeamercolor{bibliography entry note}{fg=bbspurple!75!black}  
+% abstract
+\setbeamercolor*{abstract title}{fg=bbspurple}
+\setbeamerfont*{abstract title}{family=\sffamily}
+\setbeamercolor*{abstract}{fg=purple!50!black}
+\setbeamerfont*{abstract}{family=\rmfamily,size=\small}
+% Citation
+\newcommand{\ccite}[1]{{\textcolor{gold(metallic)!90!black}{\scriptsize\cite{#1}}}}
+\newcommand{\cccite}[1]{{\textcolor{palegoldenrod!80!black}{\scriptsize\cite{#1}}}}
+% URL
+\newcommand{\uurl}[1]{{\textcolor{gold(metallic)!75!black}{\scriptsize\url{#1}}}}
+\newcommand{\uuurl}[1]{{\textcolor{palegoldenrod!80!black}{\scriptsize\url{#1}}}}
+% emph 
+\renewcommand{\emph}[1]{\textcolor{bbspurple!50!black}{\textit{#1}}}
+% alert 
+%\renewcommand{\alert}[1]{\textcolor{bbspurple!90!black}{#1}}
+\newcommand{\aalert}[1]{\textcolor{palegoldenrod!90!black}{\it#1}}
+
+\mode
+<all>
