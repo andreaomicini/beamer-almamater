@@ -1,0 +1,22 @@
+% One frame on each theme of this branch, for the CI (.gitlab-ci.yml): built as
+%   pdflatex "\def\cesenatheme{CesenaSMA2006}\input{test/theme.tex}"
+% from the branch root, so the theme is read from here and nowhere else.
+\documentclass{beamer}
+\usetheme{\cesenatheme}
+\title{Test of \cesenatheme}
+\author{Andrea Omicini}
+\institute{Alma Mater Studiorum—Università di Bologna}
+\date{}
+\begin{document}
+\frame{\titlepage}
+\section{Section}
+\subsection{Subsection}
+\begin{frame}{A frame}
+  \begin{block}{A block}
+    \begin{itemize}
+      \item an item, \alert{an alert}
+      \item<2-> an overlay
+    \end{itemize}
+  \end{block}
+\end{frame}
+\end{document}
