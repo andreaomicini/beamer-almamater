@@ -71,6 +71,23 @@ and with the split, the PDFs byte-identical but for the `/Style` entry below.
 The six repositories stay, frozen and readable: the historical stages of the recovered courses pin
 them (`cesena-2006` … on AMSCesena), and their READMEs keep each palette's history and sources.
 
+## history: the themes of the time
+
+The decks of the courses recovered with their history are rebuilt, stage by stage, on the theme they were taught
+with. Those themes live here, since 2026-11-08, one branch per old style, each with its own CI (a frame built on
+every theme of the branch), the tags on the very commits the old repositories had:
+
+| branch | from | tags |
+| --- | --- | --- |
+| `history/cesena` | `beamer-AMSCesena`'s `cesena` | `cesena-2006` … `cesena-2011` (CesenaSMA2006 … Cesena2011) |
+| `history/silverblue` | `beamer-AMSSilverBlue`'s `cesena` | `silverblue-cesena-1.0`, `silverblue-cesena-1.0-ciatto` (AMSCesenaBleu) |
+| `history/redgrey` | `beamer-AMSRedGrey`'s `cesena` | `redgrey-cesena-1.0` (AMSCesena 1.0) |
+| `history/purpleandgold` | `beamer-AMSPurpleAndGold`'s `cesena` | `purpleandgold-cesena-1.1` (AMSCesenaPurpleAndGold) |
+| `history/bolognafc-1.5` | `beamer-AMSBolognaFC`'s `1.5` | `bolognafc-1.5.20230211-nodot` (AMSBolognaFC 1.5) |
+
+A new theme of the time goes on its branch here, with its tag; stages already committed keep pinning the old
+repositories, frozen but readable.
+
 ## structure
 
 <!-- markdownlint-disable MD013 -->
