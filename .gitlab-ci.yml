@@ -1,4 +1,4 @@
-# The branch `history/bolognafc-1.5` holds a theme of the time, brought from beamer-AMSBolognaFC's 1.5 branch on 2026-11-08 (almamater:
+# The branch `history/bolognafc` holds a theme of the time, brought from beamer-AMSBolognaFC's 1.5 branch on 2026-11-08 (almamater:
 # the six styles as one). The decks' history pins it through the tags bolognafc-1.5.20230211-nodot. This job builds one
 # frame on each theme of the branch, so that a change here is checked before any history is rebuilt on it: a TeX
 # error, or a theme read from anywhere but this branch, fails the job.
@@ -6,7 +6,7 @@
 themes:
   image: texlive/texlive:latest
   rules:
-    - if: $CI_COMMIT_BRANCH == "history/bolognafc-1.5"
+    - if: $CI_COMMIT_BRANCH == "history/bolognafc"
   script:
     - |
       for t in AMSBolognaFC; do
