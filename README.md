@@ -1,5 +1,7 @@
 # beamer-almamater
 
+![almamater Beamer style logo](logo/almamater-style-full.svg)
+
 > The Beamer style of Alma Mater Studiorum — Università di Bologna decks, in six
 > presets: one theme, six colour themes, two font themes
 
