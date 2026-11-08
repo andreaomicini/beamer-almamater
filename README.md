@@ -83,7 +83,7 @@ every theme of the branch), the tags on the very commits the old repositories ha
 | `history/silverblue` | `beamer-AMSSilverBlue`'s `cesena` | `silverblue-cesena-1.0`, `silverblue-cesena-1.0-ciatto` (AMSCesenaBleu) |
 | `history/redgrey` | `beamer-AMSRedGrey`'s `cesena` | `redgrey-cesena-1.0` (AMSCesena 1.0) |
 | `history/purpleandgold` | `beamer-AMSPurpleAndGold`'s `cesena` | `purpleandgold-cesena-1.1` (AMSCesenaPurpleAndGold) |
-| `history/bolognafc-1.5` | `beamer-AMSBolognaFC`'s `1.5` | `bolognafc-1.5.20230211-nodot` (AMSBolognaFC 1.5) |
+| `history/bolognafc` | `beamer-AMSBolognaFC`'s `1.5` | `bolognafc-1.5.20230211-nodot` (AMSBolognaFC 1.5) |
 
 A new theme of the time goes on its branch here, with its tag; stages already committed keep pinning the old
 repositories, frozen but readable.
