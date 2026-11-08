@@ -1,4 +1,4 @@
-# The branch `cesena` holds the themes the SMA-LS course decks were taught with (README.md); the decks'
+# The branch `history/cesena` (the `cesena` branch of beamer-AMSCesena until 2026-11-08) holds the themes the SMA-LS course decks were taught with (README.md); the decks'
 # history pins them through the tags cesena-2006, cesena-2007, cesena-2008, cesena-2009, cesena-2010, cesena-2011. This job builds one frame on
 # each theme, so that a change here is checked before any deck's history is rebuilt on it: a TeX error,
 # or a theme read from anywhere but this branch, fails the job.
@@ -6,7 +6,7 @@
 themes:
   image: texlive/texlive:latest
   rules:
-    - if: $CI_COMMIT_BRANCH == "cesena"
+    - if: $CI_COMMIT_BRANCH == "history/cesena"
   script:
     - |
       for t in CesenaSMA2006 CesenaSMA2007 CesenaSMA2008 CesenaSMA2009 CesenaSMA2010 Cesena2010 Cesena2011; do
