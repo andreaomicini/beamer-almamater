@@ -1,0 +1,118 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Copyright 2026 by Andrea Omicini <andrea.omicini@unibo.it>
+%
+% This work may be distributed and/or modified under the conditions of the
+% LaTeX Project Public License, either version 1.3c of this license or (at
+% your option) any later version.  The latest version of this license is in
+%   https://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX version
+% 2008 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+% The Current Maintainer of this work is Andrea Omicini.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The AMSRedGrey palette, recovered from AMSCesena: each colour carries its
+%% provenance beside it. Roles and contrasts: README.md.
+
+\mode<presentation>
+
+%% base colours
+\definecolor{rgred}{HTML}{CC001A}          % darkred in AMSCesena
+\definecolor{rgreddark}{HTML}{990000}      % darkestred in AMSCesena, its bullets
+\definecolor{rgreddeep}{HTML}{850011}      % darkred!65!black, AMSCesena block title
+\definecolor{rgredlight}{HTML}{F0B2BA}     % darkred!30!white, guessed: the light red
+\definecolor{rgredtint}{HTML}{FBEBED}      % darkred!8!white, guessed: the faintest red
+\definecolor{rgblack}{HTML}{000000}        % black
+\definecolor{rgtext}{HTML}{140003}         % darkred!10!black, beaver palette sidebar primary
+\definecolor{rgsilver}{HTML}{B3B3B3}       % gray!60!white, beaver frame title right
+\definecolor{rgsilvertint}{HTML}{F2F2F2}   % gray!10!white, beaver frame title, AMSCesena block body
+\definecolor{rgsilvertint2}{HTML}{D9D9D9}  % gray!30!white, beaver palette primary
+\definecolor{rggrey}{HTML}{404040}         % darkgray, guessed: institute
+\definecolor{rggreymid}{HTML}{5A5A5A}      % gray!70!black, guessed: secondary text
+\definecolor{rggreyline}{HTML}{BFBFBF}     % lightgray, guessed: \ccite, \uuurl
+\definecolor{rggreybg}{HTML}{ECECEC}       % gray!15!white, beaver palette secondary, AMSCesena alerted body
+\definecolor{rgredfill}{HTML}{F8DEE1}      % derived as amsredfill from amsred (13%)
+\definecolor{rgredborder}{HTML}{F0B5BD}    % derived as amsredborder (29%)
+\definecolor{rgsilverfill}{HTML}{F1F1F1}   % silver!18!white, derived as amsgreenfill from amsgreen (18%)
+\definecolor{rgsilverborder}{HTML}{DCDCDC} % silver!46!white, derived as amsgreenborder (46%)
+\definecolor{rgwhite}{HTML}{FFFFFF}
+\definecolor{basecolour}{HTML}{CC001A} % red
+
+%% red is the identity colour, deep red and silver the structural one
+\setbeamercolor{structure}{fg=rgreddeep}
+\setbeamercolor{section in toc}{fg=rgreddeep,bg=rgwhite}
+\setbeamercolor{alerted text}{fg=rgred}
+
+%% palettes, light to loud; quaternary carries the identity bar
+\setbeamercolor*{palette primary}{fg=rggreymid,bg=rgsilvertint}
+\setbeamercolor*{palette secondary}{fg=rgtext,bg=rgsilvertint2}
+\setbeamercolor*{palette tertiary}{fg=rgwhite,bg=rgreddeep}
+\setbeamercolor*{palette quaternary}{fg=rgwhite,bg=rgred}
+
+\setbeamercolor*{sidebar}{fg=rgreddeep,bg=rgsilvertint}
+\setbeamercolor*{palette sidebar primary}{fg=rgtext}
+\setbeamercolor*{palette sidebar secondary}{fg=rggreymid}
+\setbeamercolor*{palette sidebar tertiary}{fg=rgreddeep}
+\setbeamercolor*{palette sidebar quaternary}{fg=rgwhite}
+
+%% title and frame title
+\setbeamercolor{titlelike}{parent=palette primary,fg=rgblack}
+\setbeamercolor{frametitle}{fg=rgblack,bg=rgsilvertint}
+\setbeamercolor{frametitle right}{bg=rgsilvertint2}
+
+%% rules
+\setbeamercolor*{separation line}{fg=rgsilver}
+\setbeamercolor*{fine separation line}{fg=rggreyline}
+
+\def\almamater@colourtheme{redgrey}
+%% roles: the colours almamater's commands name
+\colorlet{almamarker}{rgreddeep}
+\colorlet{almaemph}{rgreddeep}
+\colorlet{almalink}{rgred}
+\colorlet{almaspeaker}{rgred}
+\colorlet{almaondark}{rggreybg}
+\colorlet{almaquiet}{rggreyline}
+\colorlet{almafaint}{rggreyline}
+\colorlet{almasoft}{rggreymid}
+% elements, as the AMSRedGrey theme set them
+\setbeamercolor{background canvas}{bg=rgwhite}
+\setbeamercolor{normal text}{fg=rgtext}
+\setbeamercolor{alerted text}{fg=rgred}
+\setbeamercolor{quote}{fg=rggreymid}
+\setbeamercolor*{item}{fg=rgreddark}
+\setbeamercolor{title}{fg=rgblack}
+\setbeamercolor{subtitle}{fg=rggreymid}
+\setbeamercolor{author}{fg=rgred}
+\setbeamercolor{institute}{fg=rggrey}
+\setbeamercolor{date}{fg=rggreymid}
+\setbeamercolor{section in head/foot}{fg=rgwhite,bg=rgred}
+\setbeamercolor{subsection in head/foot}{fg=rgtext,bg=rgsilvertint2}
+\setbeamercolor{author in head/foot}{fg=rgwhite,bg=rgreddeep}
+\setbeamercolor{title in head/foot}{fg=rgtext,bg=rgsilvertint2}
+\setbeamercolor{date in head/foot}{fg=rggreymid,bg=rgsilvertint}
+\setbeamercolor{block title}{use=structure,fg=rgwhite,bg=rgreddeep}
+\setbeamercolor{block title alerted}{use=alerted text,fg=rgwhite,bg=rgred}
+\setbeamercolor{block title example}{use=example text,fg=rgtext,bg=rgsilverborder}
+\setbeamercolor{block body}{parent=normal text,use=block title,bg=rgsilvertint}
+\setbeamercolor{block body alerted}{parent=normal text,use=block title alerted,bg=rgredfill}
+\setbeamercolor{block body example}{parent=normal text,use=block title example,bg=rgsilverfill}
+\setbeamercolor{section in toc}{fg=rgreddeep}
+\setbeamercolor{subsection in toc}{fg=rggreymid}
+\setbeamercolor{footnote mark}{fg=rgred}
+\setbeamercolor{footnote}{fg=rggreymid}
+\setbeamercolor{bibliography item}{fg=rggreymid}
+\setbeamercolor{bibliography entry author}{fg=rgtext}
+\setbeamercolor{bibliography entry title}{fg=rgred}
+\setbeamercolor{bibliography entry location}{fg=rggreymid}
+\setbeamercolor{bibliography entry note}{fg=rgreddeep}
+\setbeamercolor*{abstract title}{fg=rgreddeep}
+\setbeamercolor*{abstract}{fg=rggreymid}
+%% surfaces: which block titles are dark
+\addtobeamertemplate{block begin}{\def\ams@emph@colour{.}\ams@darktrue\setbeamercolor{alerted text}{fg=rggreyline}}
+  {\def\ams@emph@colour{rgreddeep}\ams@darkfalse\setbeamercolor{alerted text}{fg=rgred}}
+\addtobeamertemplate{block alerted begin}{\def\ams@emph@colour{.}\ams@darktrue\setbeamercolor{alerted text}{fg=rggreyline}}
+  {\def\ams@emph@colour{rgreddeep}\ams@darkfalse\setbeamercolor{alerted text}{fg=rgred}}
+\addtobeamertemplate{block example begin}{\def\ams@emph@colour{.}\def\ams@quiet{rggreymid}}
+  {\def\ams@emph@colour{rgreddeep}\def\ams@quiet{rggreyline}}
+\mode
+<all>

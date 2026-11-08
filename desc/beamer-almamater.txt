@@ -1,0 +1,1 @@
+Beamer style for presentations by AMS people: one theme, six presets (AMSUniBo, AMSBolognaFC, AMSCesena, AMSPurpleAndGold, AMSRedGrey, AMSSilverBlue)

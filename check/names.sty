@@ -1,0 +1,199 @@
+%% names.sty -- the canonical vocabulary of every deck repository (talks and courses)
+%% Andrea Omicini <mailto:andrea.omicini@unibo.it>
+%%
+%% Never loaded by a deck. Each repository's own sty/names.sty is a FILE (never a link) holding the
+%% lines of this file it uses, copied as they are, plus what is its own (marked `% local`).
+%% Late binding (Andrea, 2026-11-03): a change here is not propagated. A name is aligned in a repository
+%% only when the decks using it are rebuilt anyway, never to redo them all; a new name is copied from here.
+%% /course-check and /deck-check list, as `later`, a name defined otherwise than here and a name neither
+%% here nor marked local (promote it here, or mark it local).
+%% One line per name, an acronym included (one \DeclareAcronym line, sorted by id). Every line is in the commands
+%% every class has, \textsf{…} \textsc{…} \texttt{…}, never {\sf …} {\sc …} {\tt …}, which KOMA's classes lack
+%% (Andrea, 2026-11-08). `% decision:` marks a name whose forms in use print differently: the line is the
+%% majority form until Andrea chooses; the other forms are listed.
+%%
+\ProvidesPackage{names}[2026/11/08 The canonical vocabulary -- beamer-almamater/check]
+
+\RequirePackage{acro}
+\addtobeamertemplate{background}{\acresetall}{}  % Beamer only: first use expands once per frame
+
+\DeclareAcronym{aamas}{short = {AAMAS}, long = {Autonomous Agents and Multi-Agent Systems}, pdfstring = {AAMAS}}
+\DeclareAcronym{acl}{short = {\ensuremath{\mathcal{ACL}}}, long = {\ensuremath{\mathcal{A}}gent \ensuremath{\mathcal{C}}ommunication \ensuremath{\mathcal{L}}anguage}, pdfstring = {ACL}}
+\DeclareAcronym{adt}{short = {ADT}, long = {algebraic data type}, pdfstring = {ADT}}
+\DeclareAcronym{aea}{short = {\textsf{A\&A}}, long = {\textsf{A}gents \textsf{\&} \textsf{A}rtefacts}, pdfstring = {AeA}}  % decided (Andrea, 2026-11-08): \textsf, never \textsc; not {\sc A\&A}, \textsc{A\&A} [5]
+\DeclareAcronym{agot}{short = {AGoT}, long = {Agentic Graph of Thoughts}, pdfstring = {AGoT}}
+\DeclareAcronym{ai}{short = {AI}, long = {artificial intelligence}, pdfstring = {AI}}
+\DeclareAcronym{aixia}{short = {AIxIA}, long = {Italian Association for Artificial Intelligence}, pdfstring = {AIxIA}}
+\DeclareAcronym{aose}{short = {AOSE}, long = {agent-oriented software engineering}}
+\DeclareAcronym{api}{short = {API}, long = {application programming interface}, pdfstring = {API}}
+\DeclareAcronym{at}{short = {AT}, long = {Activity Theory}}
+\DeclareAcronym{atal}{short = {ATAL}, long = {Agent Theories, Architectures, and Languages}, pdfstring = {ATAL}}
+\DeclareAcronym{bct}{short = {BCT}, long = {blockchain technology}, pdfstring = {BCT}}
+\DeclareAcronym{bdd}{short = {BDD}, long = {binary decision diagram}, pdfstring = {BDD}}
+\DeclareAcronym{bdi}{short = {\textsc{BDI}}, long = {\textsc{B}elief, \textsc{D}esire, \textsc{I}ntention}, pdfstring = {BDI}}  % also, printing the same: {\sc …}/{\sf …} for \textsc/\textsf [2]
+\DeclareAcronym{bn}{short = {BN}, long = {Bayesian network}, pdfstring = {BN}}
+\DeclareAcronym{cartago}{short = {\textsf{CArtAgO}}, long = {\textsf{C}artesian \textsf{A}rtifacts for \textsf{A}gents \textsf{O}riented programming}, pdfstring = {CArtAgO}}  % also, printing the same: {\sc …}/{\sf …} for \textsc/\textsf [2]
+\DeclareAcronym{clp}{short = {CLP}, long = {constraint logic programming}, pdfstring = {CLP}}
+\DeclareAcronym{cnf}{short = {CNF}, long = {clausal normal form}, pdfstring = {CNF}}
+\DeclareAcronym{cop}{short = {COP}, long = {constraint optimisation problem}, pdfstring = {COP}}
+\DeclareAcronym{cot}{short = {CoT}, long = {Chain-of-Thought}, pdfstring = {CoT}}
+\DeclareAcronym{cp}{short = {CP}, long = {constraint programming}, pdfstring = {CP}}
+\DeclareAcronym{cscw}{short = {CSCW}, long = {Computer Supported Cooperative Work}}
+\DeclareAcronym{csp}{short = {CSP}, long = {constraint satisfaction problem}, pdfstring = {CSP}}
+\DeclareAcronym{dag}{short = {DAG}, long = {directed acyclic graph}, pdfstring = {DAG}}
+\DeclareAcronym{dai}{short = {DAI}, long = {distributed artificial intelligence}}
+\DeclareAcronym{db}{short = {DB}, long = {database}, pdfstring = {DB}}
+\DeclareAcronym{dlt}{short = {DLT}, long = {distributed ledger technology}, pdfstring = {DLT}}
+\DeclareAcronym{dry}{short = {DRY}, long = {Don't Repeat Yourself}, pdfstring = {DRY}}
+\DeclareAcronym{ds}{short = {DS}, long = {distribution semantics}, pdfstring = {DS}}
+\DeclareAcronym{dsl}{short = {DSL}, long = {domain-specific language}, pdfstring = {DSL}}
+\DeclareAcronym{easss}{short = {EASSS}, long = {European Agent Systems Summer School}, pdfstring = {EASSS}}
+\DeclareAcronym{emas}{short = {EMAS}, long = {Engineering Multi-Agent Systems}, pdfstring = {EMAS}}
+\DeclareAcronym{fipa}{short = {FIPA}, long = {{F}oundation for {I}ntelligent {P}hysical {A}gents}, pdfstring = {FIPA}}  % decided (Andrea, 2026-11-08): plain; not {\sf FIPA} [2]
+\DeclareAcronym{fol}{short = {FOL}, long = {first-order logic}, pdfstring = {FOL}}
+\DeclareAcronym{fp}{short = {FP}, long = {functional programming}, pdfstring = {FP}}
+\DeclareAcronym{g25flash}{short = {2.5 Flash}, long = {Gemini-2.5-Flash}, pdfstring = {Gemini 2.5 Flash}}
+\DeclareAcronym{g25flashlite}{short = {2.5 Flash-Lite}, long = {Gemini-2.5-Flash-Lite}, pdfstring = {Gemini 2.5 Flash-Lite}}
+\DeclareAcronym{g31flashlite}{short = {3.1 Flash-Lite}, long = {Gemini-3.1-Flash-Lite}, pdfstring = {Gemini 3.1 Flash-Lite}}
+\DeclareAcronym{got}{short = {GoT}, long = {Graph-of-Thoughts}, pdfstring = {GoT}}
+\DeclareAcronym{hci}{short = {HCI}, long = {Human Computer Interaction}}
+\DeclareAcronym{icl}{short = {ICL}, long = {independent choice logic}, pdfstring = {ICL}}
+\DeclareAcronym{icmas}{short = {ICMAS}, long = {International Conference on Multi-Agent Systems}, pdfstring = {ICMAS}}
+\DeclareAcronym{ide}{short = {IDE}, long = {integrated development environment}, pdfstring = {IDE}}
+\DeclareAcronym{iot}{short = {{I}o{T}}, long = {Internet of Things}, pdfstring = {IoT}}
+\DeclareAcronym{jade}{short = {\textsc{Jade}}, long = {\textsc{J}ava \textsc{A}gent \textsc{DE}velopment Framework}, pdfstring = {Jade}}  % decided (Andrea, 2026-11-08): small caps Jade; not short = {JADE}, pdfstring = {JADE} [2]; also, printing the same: {\sc …}/{\sf …} for \textsc/\textsf [8]
+\DeclareAcronym{jvm}{short = {JVM}, long = {Java Virtual Machine}, pdfstring = {JVM}}
+\DeclareAcronym{llm}{short = {LLM}, long = {large language model}, pdfstring = {LLM}}
+\DeclareAcronym{lm}{short = {LM}, long = {language model}, pdfstring = {LM}}
+\DeclareAcronym{lnai}{short = {LNAI}, long = {Lecture Notes in Artificial Intelligence}, pdfstring = {LNAI}}
+\DeclareAcronym{lncs}{short = {LNCS}, long = {Lecture Notes in Computer Science}, pdfstring = {LNCS}}
+\DeclareAcronym{lp}{short = {LP}, long = {logic programming}, pdfstring = {LP}}
+\DeclareAcronym{lpaas}{short = {LPaaS}, long = {Logic Programming as a Service}, pdfstring = {LPaaS}}
+\DeclareAcronym{lpad}{short = {LPAD}, long = {logic program with annotated disjunctions}, pdfstring = {LPAD}}
+\DeclareAcronym{maamaw}{short = {MAAMAW}, long = {Modelling Autonomous Agents in a Multi-Agent World}, pdfstring = {MAAMAW}}
+\DeclareAcronym{mas}{short = {MAS}, long = {multi-agent system}}
+\DeclareAcronym{mcmc}{short = {MCMC}, long = {Markov chain Monte Carlo}, pdfstring = {MCMC}}
+\DeclareAcronym{mcp}{short = {MCP}, long = {Model Context Protocol}, pdfstring = {MCP}}
+\DeclareAcronym{meu}{short = {MEU}, long = {maximum expected utility}, pdfstring = {MEU}}
+\DeclareAcronym{mgu}{short = {MGU}, long = {most general unifier}, pdfstring = {MGU}}
+\DeclareAcronym{ml}{short = {ML}, long = {machine learning}, pdfstring = {ML}}
+\DeclareAcronym{mok}{short = {\textsc{MoK}}, long = {\textsc{M}olecules \textsc{o}f \textsc{K}nowledge}, pdfstring = {MoK}}  % also, printing the same: {\sc …}/{\sf …} for \textsc/\textsf [6]
+\DeclareAcronym{nesy}{short = {NeSy}, long = {neurosymbolic}, pdfstring = {NeSy}}
+\DeclareAcronym{nlp}{short = {NLP}, long = {natural language processing}, pdfstring = {NLP}}
+\DeclareAcronym{oma}{short = {OMA}, long = {{O}bject {M}anagement {A}rchitecture}, pdfstring = {OMA}}
+\DeclareAcronym{omg}{short = {OMG}, long = {{O}bject {M}anagement {G}roup}, pdfstring = {OMG}}
+\DeclareAcronym{oop}{short = {OOP}, long = {object-oriented programming}, pdfstring = {OOP}}
+\DeclareAcronym{pddl}{short = {PDDL}, long = {Planning Domain Definition Language}}
+\DeclareAcronym{plp}{short = {PLP}, long = {probabilistic logic programming}, pdfstring = {PLP}}
+\DeclareAcronym{pomdp}{short = {POMDP}, long = {partially observable Markov decision process}, pdfstring = {POMDP}}
+\DeclareAcronym{rag}{short = {RAG}, long = {retrieval-augmented generation}, pdfstring = {RAG}}
+\DeclareAcronym{respect}{short = {\textsf{{R}e{S}pec{T}}}, long = {\textsf{R}eaction \textsf{Spec}ification \textsf{T}uples}, pdfstring = {ReSpecT}}  % also, printing the same: {\sc …}/{\sf …} for \textsc/\textsf [2]
+\DeclareAcronym{rest}{short = {ReST}, long = {{Re}presentational {S}tate {T}ransfer}, pdfstring = {ReST}}
+\DeclareAcronym{sld}{short = {SLD}, long = {Linear resolution for Definite clauses with Selection function}, pdfstring = {SLD}}
+\DeclareAcronym{strips}{short = {STRIPS}, long = {Stanford Research Institute Problem Solver}}
+\DeclareAcronym{tot}{short = {ToT}, long = {Tree-of-Thoughts}, pdfstring = {ToT}}
+\DeclareAcronym{tsp}{short = {TSP}, long = {travelling salesperson problem}, pdfstring = {TSP}}
+\DeclareAcronym{tucson}{short = {\textsf{{T}u{CS}o{N}}}, long = {\textsf{Tu}ple \textsf{C}entres \textsf{S}pread \textsf{o}ver the \textsf{N}etwork}, pdfstring = {TuCSoN}}  % also, printing the same: {\sc …}/{\sf …} for \textsc/\textsf [2]
+\DeclareAcronym{vle}{short = {VLE}, long = {Virtual Learning Environment}}  % decided (Andrea, 2026-11-08): VLE; Virtuale stays local in ds2425 and ds2526 [2]
+\DeclareAcronym{xai}{short = {XAI}, long = {explainable artificial intelligence}, pdfstring = {XAI}}
+\DeclareAcronym{zscot}{short = {Zero-Shot CoT}, long = {Zero-Shot Chain-of-Thought}, pdfstring = {Zero-Shot CoT}}
+
+\newcommand{\aea}{\acs*{aea}}  % one definition, the acronym's short form, not counted as a first use (Andrea, 2026-11-08); was \mbox{\textsf{A\&A}}
+\newcommand{\aearespect}{\acs*{aea} \acs*{respect}}  % decided (Andrea, 2026-11-08): the acronyms, starred so as not to count as a first use; not \aea{} \respect{}
+\newcommand{\agentspeak}{{A}gent{S}peak}
+\newcommand{\agentspeakl}{\agentspeak({L})}
+\newcommand{\amuse}{{AMUSE}}
+\newcommand{\apicename}{{\textsf{APICe}}}  % also, printing the same: {\sf{APICe}} [5] | {\sf APICe} [10]
+\newcommand{\aurora}{{Aurora}}
+\newcommand{\bdi}{\acs*{bdi}}  % one definition, the acronym's short form, not counted as a first use (Andrea, 2026-11-08); was {BDI}
+\newcommand{\biopepa}{{BioPEPA}}
+\newcommand{\blockchain}{blockchain}
+\newcommand{\Blockchain}{{B}lockchain}
+\newcommand{\cartago}{\acs*{cartago}}  % one definition, the acronym's short form, not counted as a first use (Andrea, 2026-11-08); was \mbox{\textsf{{CA}rt{A}g{O}}}
+\newcommand{\chatgpt}{ChatGPT}
+\newcommand{\chip}{{CHIP}}
+\newcommand{\choco}{{Choco}}
+\newcommand{\chuffed}{{Chuffed}}
+\newcommand{\clpb}{CLP(B)}
+\newcommand{\clpfd}{CLP(FD)}
+\newcommand{\clph}{CLP(H)}
+\newcommand{\clpq}{CLP(Q)}
+\newcommand{\clpr}{CLP(R)}
+\newcommand{\clpx}{CLP(X)}
+\newcommand{\cofields}{{Co-fields}}
+\newcommand{\corba}{{CORBA}}
+\newcommand{\corda}{{CORDA}}
+\newcommand{\cplint}{{\textsf{cplint}}}
+\newcommand{\cplintswish}{\cplint{} on \swish{}}
+\newcommand{\cpmpy}{{CPMpy}}
+\newcommand{\cpsat}{{CP}-{SAT}}
+\newcommand{\deepproblog}{{D}eep\problog{}}
+\newcommand{\dtproblog}{{DT}\problog{}}
+\newcommand{\eclipseclp}{\texorpdfstring{ECL\textsuperscript{\textit{i}}PS\textsuperscript{\textit{e}}}{ECLiPSe}}
+\newcommand{\elda}{{ELDA}}
+\newcommand{\emblem}{{EMBLEM}}
+\newcommand{\erlang}{{E}rlang}
+\newcommand{\ethereum}{{E}thereum}
+\newcommand{\exat}{{eXAT}}
+\newcommand{\fipa}{\acs*{fipa}}  % one definition, the acronym's short form, not counted as a first use (Andrea, 2026-11-08); was {FIPA}
+\newcommand{\flatzinc}{{F}lat{Z}inc}
+\newcommand{\gammamodel}{Gamma}
+\newcommand{\gecode}{{Gecode}}
+\newcommand{\geolinda}{{\textsc{GeoLinda}}}  % also, printing the same: {\sc GeoLinda} [6]
+\newcommand{\gprolog}{{GNU} {P}rolog}
+\newcommand{\hedera}{{Hedera Hashgraph}}
+\newcommand{\iotadlt}{{IOTA}}
+\newcommand{\jacamo}{{\textsf{JaCaMo}}}  % also, printing the same: {\sf JaCaMo} [9]
+\newcommand{\jason}{\textit{Jason}}  % decided (Andrea, 2026-11-03): plain italic, as {\bf\it {J}ason} [7] prints (its \bf is undone by \it); not \textbf{\textit{J}ason} [1]
+\newcommand{\jedi}{{JEDI}}
+\newcommand{\klaim}{{\textsc{{K}laim}}}  % also, printing the same: {\sc{K}laim} [6]
+\newcommand{\lime}{{\textsc{{L}ime}}}  % also, printing the same: {\sc{{L}ime}} [2]
+\newcommand{\linda}{{\textsc{{L}inda}}}  % also, printing the same: {\sc{{L}inda}} [8]
+\newcommand{\lpaas}{\acs*{lpaas}}  % one definition, the acronym's short form, not counted as a first use (Andrea, 2026-11-08); was {LPaaS}
+\newcommand{\luce}{\mbox{\textsf{{L}u{C}e}}}  % also, printing the same: \mbox{\sf{{L}u{C}e}} [7]
+\newcommand{\mas}{\acs*{mas}}  % one definition, the acronym's short form, not counted as a first use (Andrea, 2026-11-08); was {MAS}
+\newcommand{\mathbench}{{\textsc{MATH}}}
+\newcommand{\mcintyre}{{MCINTYRE}}
+\newcommand{\minizinc}{{M}ini{Z}inc}
+\newcommand{\moise}{{\textsc{Moise}}}  % also, printing the same: {\sc Moise} [9]
+\newcommand{\mokf}{$\mathcal{F}_{\mathcal{M}o\mathcal{K}}$}
+\newcommand{\moknews}{{\textsc{MoK}}-{\texttt{News}}}  % also, printing the same: {\sc MoK}-{\tt News} [2]
+\newcommand{\ortools}{{OR}-{T}ools}
+\newcommand{\pepa}{{PEPA}}
+\newcommand{\pita}{{PITA}}
+\newcommand{\pogo}{\pokemon{} {G}o}
+\newcommand{\pokemon}{{P}ok{\'e}mon}
+\newcommand{\prism}{{PRISM}}
+\newcommand{\problog}{{P}rob{L}og}
+\newcommand{\prode}{{PRoDe}}
+\newcommand{\prolog}{{P}rolog}
+\newcommand{\prs}{{PRS}}
+\newcommand{\react}{{ReAct}}
+\newcommand{\respect}{\acs*{respect}}  % one definition, the acronym's short form, not counted as a first use (Andrea, 2026-11-08); was {\textsf{{R}e{S}pec{T}}}
+\newcommand{\sapere}{{SAPERE}}
+\newcommand{\scala}{{Scala}}
+\newcommand{\sicstus}{{SICStus \prolog}}  % decided (Andrea, 2026-11-08): through \prolog; also, printing the same: {SICStus Prolog}
+\newcommand{\simpa}{\mbox{simp{A}}}  % also, printing the same: {simp{A}} [1]
+\newcommand{\smartcontract}{smart contract}
+\newcommand{\SmartContract}{{S}mart {C}ontract}
+\newcommand{\Smartcontract}{Smart contract}
+\newcommand{\soda}{{\textsf{SODA}}}  % also, printing the same: \mbox{\sf{SODA}} [2] | {\sf SODA} [10]
+\newcommand{\spatialrespect}{{S}patial {\textsf{{R}e{S}pec{T}}}}  % also, printing the same: {S}patial {\sf {R}e{S}pec{T}} [2]
+\newcommand{\spatialtuples}{{\textsf{{S}patial {T}uples}}}  % also, printing the same: {\sf {S}patial {T}uples} [2]
+\newcommand{\stoklaim}{{\textsc{{S}to{K}laim}}}  % also, printing the same: {\sc{S}to{K}laim} [6]
+\newcommand{\subsym}{{subsymbolic}}
+\newcommand{\Subsym}{{Subsymbolic}}
+\newcommand{\swarmlinda}{{S}warm{L}inda}
+\newcommand{\swiprolog}{{SWI}-{P}rolog}
+\newcommand{\swish}{{SWISH}}
+\newcommand{\sym}{{symbolic}}
+\newcommand{\Sym}{{Symbolic}}
+\newcommand{\tforj}{\acs*{tucson}$4$\acs*{jade}}  % decided (Andrea, 2026-11-08): the acronyms, starred so as not to count as a first use; not \tucson{}$4$\acs{jade}
+\newcommand{\tforjn}{\acs*{tucson}$4$\jason{}}  % decided (Andrea, 2026-11-08): the acronym, starred so as not to count as a first use; not \tucson{}$4$\jason{}
+\newcommand{\tota}{{TOTA}}
+\newcommand{\tpkt}{{{\textsf{2}P-\textsc{Kt}}}}
+\newcommand{\tucson}{\acs*{tucson}}  % one definition, the acronym's short form, not counted as a first use (Andrea, 2026-11-08); was \mbox{\textsf{{T}u{CS}o{N}}}
+\newcommand{\tuprolog}{{\textsf{tu}\prolog}}  % decided (Andrea, 2026-11-08): tu in sans serif, Prolog in the text font; not \textsf{tu}\textrm{{P}rolog}, \mbox{{tu}\sf{{P}rolog}} [3], {{tu}\sf{{P}rolog}} [2]
+\newcommand{\typeonedm}{Type~1 DM}
+\newcommand{\ulinda}{{\textsc{uLinda}}}  % also, printing the same: {\sc uLinda} [6]
+\newcommand{\wade}{{WADE}}

@@ -1,0 +1,119 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Copyright 2026 by Andrea Omicini <andrea.omicini@unibo.it>
+%
+% This work may be distributed and/or modified under the conditions of the
+% LaTeX Project Public License, either version 1.3c of this license or (at
+% your option) any later version.  The latest version of this license is in
+%   https://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX version
+% 2008 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+% The Current Maintainer of this work is Andrea Omicini.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The palette of the AMSUniBo theme for the APICe wiki. Each name mirrors the
+%% LESS variable beside it. Provenance and roles: see README.md.
+
+\mode<presentation>
+
+%% base colours
+\definecolor{amsred}{HTML}{BB2E29}         % @ams-red
+\definecolor{amsreddark}{HTML}{8E2320}     % @ams-red-dark
+\definecolor{amsblack}{HTML}{000000}       % @ams-black
+\definecolor{amstext}{HTML}{040404}        % @ams-text
+\definecolor{amsgreen}{HTML}{56A49A}       % @ams-green
+\definecolor{amsgreenlight}{HTML}{74BDAD}  % @ams-green-light
+\definecolor{amsgreendark}{HTML}{366861}   % @ams-green-dark
+\definecolor{amsgreentint}{HTML}{DDEDEB}   % @ams-green-tint
+\definecolor{amsgreentint2}{HTML}{CCE4E1}  % @ams-green-tint2
+\definecolor{amsgrey}{HTML}{464A51}        % @ams-grey
+\definecolor{amsgreymid}{HTML}{535353}     % @ams-grey-mid
+\definecolor{amsgreyline}{HTML}{C7C9CB}    % @ams-grey-line
+\definecolor{amsgreybg}{HTML}{F0F1F1}      % @ams-grey-bg
+\definecolor{amswhite}{HTML}{FFFFFF}
+\definecolor{basecolour}{HTML}{BB2E29}     % rosso istituzionale
+
+%% block fills, as the web theme's LESS computes them
+\definecolor{amsredfill}{HTML}{F6D9D8}     % @state-danger-bg
+\definecolor{amsredborder}{HTML}{EBA8A6}   % @state-danger-border
+\definecolor{amsgreenfill}{HTML}{E1EFED}   % @state-success-bg
+\definecolor{amsgreenborder}{HTML}{B2D7D2} % @state-success-border
+
+%% red is the identity colour, green the structural one
+\setbeamercolor{structure}{fg=amsgreendark}
+\setbeamercolor{section in toc}{fg=amsgreendark,bg=amswhite}
+\setbeamercolor{alerted text}{fg=amsred}
+
+%% palettes, light to loud; quaternary carries the navbar red
+\setbeamercolor*{palette primary}{fg=amsgreymid,bg=amsgreentint}
+\setbeamercolor*{palette secondary}{fg=amstext,bg=amsgreentint2}
+\setbeamercolor*{palette tertiary}{fg=amswhite,bg=amsgreendark}
+\setbeamercolor*{palette quaternary}{fg=amswhite,bg=amsred}
+
+\setbeamercolor*{sidebar}{fg=amsgreendark,bg=amsgreentint}
+\setbeamercolor*{palette sidebar primary}{fg=amstext}
+\setbeamercolor*{palette sidebar secondary}{fg=amsgreymid}
+\setbeamercolor*{palette sidebar tertiary}{fg=amsgreendark}
+\setbeamercolor*{palette sidebar quaternary}{fg=amswhite}
+
+%% title and frame title
+\setbeamercolor{titlelike}{parent=palette primary,fg=amsblack}
+\setbeamercolor{frametitle}{fg=amsblack,bg=amsgreentint}
+\setbeamercolor{frametitle right}{bg=amsgreentint2}
+
+%% rules
+\setbeamercolor*{separation line}{fg=amsgreen}
+\setbeamercolor*{fine separation line}{fg=amsgreyline}
+
+\def\almamater@colourtheme{amsunibo}
+%% roles: the colours almamater's commands name
+\colorlet{almamarker}{amsgreendark}
+\colorlet{almaemph}{amsgreendark}
+\colorlet{almalink}{amsred}
+\colorlet{almaspeaker}{amsred}
+\colorlet{almaondark}{amsgreybg}
+\colorlet{almaquiet}{amsgreyline}
+\colorlet{almafaint}{amsgreyline}
+\colorlet{almasoft}{amsgreymid}
+% elements, as the AMSUniBo theme set them
+\setbeamercolor{background canvas}{bg=amswhite}
+\setbeamercolor{normal text}{fg=amstext}
+\setbeamercolor{alerted text}{fg=amsred}
+\setbeamercolor{quote}{fg=amsgreymid}
+\setbeamercolor*{item}{fg=amsred}
+\setbeamercolor{title}{fg=amsblack}
+\setbeamercolor{subtitle}{fg=amsgreymid}
+\setbeamercolor{author}{fg=amsred}
+\setbeamercolor{institute}{fg=amsgrey}
+\setbeamercolor{date}{fg=amsgreymid}
+\setbeamercolor{section in head/foot}{fg=amswhite,bg=amsred}
+\setbeamercolor{subsection in head/foot}{fg=amstext,bg=amsgreentint2}
+\setbeamercolor{author in head/foot}{fg=amswhite,bg=amsgreendark}
+\setbeamercolor{title in head/foot}{fg=amstext,bg=amsgreentint2}
+\setbeamercolor{date in head/foot}{fg=amsgreymid,bg=amsgreentint}
+\setbeamercolor{block title}{use=structure,fg=amswhite,bg=amsgreendark}
+\setbeamercolor{block title alerted}{use=alerted text,fg=amswhite,bg=amsred}
+\setbeamercolor{block title example}{use=example text,fg=amstext,bg=amsgreenborder}
+\setbeamercolor{block body}{parent=normal text,use=block title,bg=amsgreentint}
+\setbeamercolor{block body alerted}{parent=normal text,use=block title alerted,bg=amsredfill}
+\setbeamercolor{block body example}{parent=normal text,use=block title example,bg=amsgreenfill}
+\setbeamercolor{section in toc}{fg=amsgreendark}
+\setbeamercolor{subsection in toc}{fg=amsgreymid}
+\setbeamercolor{footnote mark}{fg=amsred}
+\setbeamercolor{footnote}{fg=amsgreymid}
+\setbeamercolor{bibliography item}{fg=amsgreymid}
+\setbeamercolor{bibliography entry author}{fg=amstext}
+\setbeamercolor{bibliography entry title}{fg=amsred}
+\setbeamercolor{bibliography entry location}{fg=amsgreymid}
+\setbeamercolor{bibliography entry note}{fg=amsgreendark}
+\setbeamercolor*{abstract title}{fg=amsgreendark}
+\setbeamercolor*{abstract}{fg=amsgreymid}
+%% surfaces: which block titles are dark
+\addtobeamertemplate{block begin}{\def\ams@emph@colour{.}\ams@darktrue\setbeamercolor{alerted text}{fg=amsgreyline}}
+  {\def\ams@emph@colour{amsgreendark}\ams@darkfalse\setbeamercolor{alerted text}{fg=amsred}}
+\addtobeamertemplate{block alerted begin}{\def\ams@emph@colour{.}\ams@darktrue\setbeamercolor{alerted text}{fg=amsgreyline}}
+  {\def\ams@emph@colour{amsgreendark}\ams@darkfalse\setbeamercolor{alerted text}{fg=amsred}}
+\addtobeamertemplate{block example begin}{\def\ams@emph@colour{.}\def\ams@quiet{amsgreymid}}
+  {\def\ams@emph@colour{amsgreendark}\def\ams@quiet{amsgreyline}}
+\mode
+<all>

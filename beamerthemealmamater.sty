@@ -1,0 +1,250 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Copyright 2026 by Andrea Omicini <andrea.omicini@unibo.it>
+%
+% This work may be distributed and/or modified under the conditions of the
+% LaTeX Project Public License, either version 1.3c of this license or (at
+% your option) any later version.  The latest version of this license is in
+%   https://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX version
+% 2008 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+% The Current Maintainer of this work is Andrea Omicini.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% almamater: what the six AMS Beamer styles share. A style is this theme, a colour theme
+%% (palette, roles, which surfaces are dark) and a font theme; the presets
+%% beamertheme<Style>.sty name the three. Everything else: README.md.
+%% name and version -- Major.Minor[.Patch]; the release time-stamp is appended by the CI
+\newcommand{\stylename}{almamater}
+\newcommand{\stylemajor}{2}
+\newcommand{\styleminor}{0}
+%% \stylepatch is optional: comment the next line out to release as Major.Minor
+\newcommand{\stylepatch}{0}
+\ifdefined\stylepatch
+  \newcommand{\styleversion}{\stylemajor.\styleminor.\stylepatch}
+\else
+  \newcommand{\styleversion}{\stylemajor.\styleminor}
+\fi
+\typeout{}
+\typeout{\stylename-\styleversion}
+%% the style that built this PDF, recorded in the Info dictionary and nowhere
+%% else: no frame shows it, and it survives the file leaving the repository.
+%% Written with the engine primitive, which merges: hyperref's own pdfinfo key
+%% is claimed by beamer already and refuses a second use.
+%% with the colour and font themes the deck used, which load after this file
+\providecommand{\almamater@colourtheme}{none}
+\providecommand{\almamater@fonttheme}{none}
+\AtBeginDocument{%
+  \ifdefined\pdfextension
+    \pdfextension info{ /Style (\stylename\space\styleversion, \almamater@colourtheme, \almamater@fonttheme) }
+  \else
+    \ifdefined\pdfinfo
+      \pdfinfo{ /Style (\stylename\space\styleversion, \almamater@colourtheme, \almamater@fonttheme) }
+    \fi
+  \fi}
+%% options
+\newif\if@doApice
+\@doApicefalse
+\DeclareOption{apice}{\@doApicetrue}
+%% which seal watermarks the slides -- none unless asked for: bologna (the Ateneo)
+%% or cesena (the Campus). The seals belong to the Alma Mater, so a deck claims
+%% one explicitly; whoever is outside the Alma Mater just leaves the option out
+\newif\if@doSeal
+\@doSealfalse
+\newif\if@doCesena
+\@doCesenafalse
+\DeclareOption{bologna}{\@doSealtrue\@doCesenafalse}
+\DeclareOption{cesena}{\@doSealtrue\@doCesenatrue}
+\ProcessOptions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mode<presentation>
+%
+%% the APICe marker, a publication's or (since 1.7.1) a talk's or a thesis's; expands to nothing
+%% without the apice option. It carries its
+%% own trailing gap, outside the link so the hotspot stops at the word: the .bst
+%% appends two spaces after \apicepubpar, but BibTeX wraps the .bbl line there and
+%% the newline collapses them into one \tiny space, which the DOI runs into
+\if@doApice
+\newcommand{\apicepubpar}[1]{{\textcolor{almamarker}{\tiny\href{https://\ams@apice@host@pub.apice.unibo.it/#1}{\textsf{APICe}}\mbox{~~~}}}}
+\newcommand{\apicetalkpar}[1]{{\textcolor{almamarker}{\tiny\href{https://\ams@apice@host@talk.apice.unibo.it/#1}{\textsf{APICe}}\mbox{~~~}}}}
+%% a thesis has no short host that works yet: its full address
+\newcommand{\apicethesispar}[1]{{\textcolor{almamarker}{\tiny\href{https://apice.unibo.it/bin/view/Thesis/#1}{\textsf{APICe}}\mbox{~~~}}}}
+\else
+\newcommand{\apicepubpar}[1]{}
+\newcommand{\apicetalkpar}[1]{}
+\newcommand{\apicethesispar}[1]{}
+\fi
+%
+\setbeamertemplate{navigation symbols}{}
+%
+\useoutertheme{infolines}
+\useinnertheme[shadow=true]{rounded}
+%% background -- plain by default; with bologna or cesena, a seal in grey cropped
+%% at the lower-right corner: the Ateneo with the former, the Campus di Cesena
+%% with the latter. Cesena's ring is solid where the Ateneo's is an outline, so
+%% it is set lighter to weigh the same
+\if@doSeal
+  \if@doCesena
+    \pgfdeclareimage[height=.97\paperheight]{bg}{almacesena-background}
+  \else
+    \pgfdeclareimage[height=.97\paperheight]{bg}{almabologna-background}
+  \fi
+  \setbeamertemplate{background}{\pgfuseimage{bg}}
+\fi
+%% text
+%% bullets
+%% front page
+%% head and foot lines -- the wiki's navbar over its breadcrumb band
+%% block headers -- block and alerted dark, example light
+%% block bodies
+%% table of contents
+%% footnote
+%% biblio
+\setbeamertemplate{bibliography item}{\insertbiblabel}
+%% the label is a pointer, not a bullet: without this it inherits item's red and
+%% collides with the title, which is red on purpose
+%% abstract
+\setbeamerfont*{abstract title}{family=\sffamily}
+\setbeamerfont*{abstract}{family=\rmfamily,size=\small}
+%% surfaces: a block or alerted block title is dark, all else light. The
+%% paired commands take their colour from the surface; doubled = smaller
+%% (and quiet grey on a light surface)
+\newif\ifams@dark
+\newcommand{\ams@onsurface}[2]{\ifams@dark#2\else#1\fi}% light, dark
+%% the quiet colour: faint on white, darker on the tinted example title
+\newcommand{\ams@quiet}{almaquiet}
+%% paired commands -- see README.md
+%% citation: faint on a light surface, light on a dark one; \cccite = \ccite
+%% #1 colour, #2 optional note (-NoValue- when absent), #3 keys.  \cite[]{...}
+%% is not \cite{...} -- it typesets an empty note -- so the test is on the
+%% marker, not on emptiness.  The marker survives being passed down here.
+\newcommand{\ams@cite}[3]{%
+  \textcolor{#1}{\textsuperscript{\tiny\IfNoValueTF{#2}{\cite{#3}}{\cite[#2]{#3}}}}%
+}
+\NewDocumentCommand{\ccite}{o m}{\ams@cite{\ams@onsurface{\ams@quiet}{almaondark}}{#1}{#2}}
+\NewDocumentCommand{\cccite}{o m}{\ams@cite{\ams@onsurface{\ams@quiet}{almaondark}}{#1}{#2}}
+%% the address of a URL or a DOI is stringed before it is used, so that a special
+%% character in it needs no escaping: \_ and a bare _ alike give one underscore.
+%% #1 receives #2 as a string with every backslash dropped -- see README.md
+\newcommand{\ams@link@arg}{}
+\ExplSyntaxOn
+\cs_new_protected:Npn \ams_link_string:Nn #1#2
+  {
+    \tl_set:Nx #1 { \tl_to_str:n {#2} }
+    \exp_args:NNo \tl_remove_all:Nn #1 \c_backslash_str
+  }
+\cs_new_eq:NN \ams@link@string \ams_link_string:Nn
+\ExplSyntaxOff
+%% URL: colour from the surface; doubled = smaller, and quiet on a light one
+\newcommand{\uurl}[1]{{\ams@link@string\ams@link@arg{#1}%
+  \textcolor{\ams@onsurface{almalink}{almaondark}}{\scriptsize\expandafter\url\expandafter{\ams@link@arg}}}}
+% a web page's URL: the colour of a journal's name, at the size around it
+\newcommand{\wwwurl}[1]{{\ams@link@string\ams@link@arg{#1}%
+  \usebeamercolor[fg]{bibliography entry location}\expandafter\url\expandafter{\ams@link@arg}}}
+\newcommand{\uuurl}[1]{{\ams@link@string\ams@link@arg{#1}%
+  \textcolor{\ams@onsurface{\ams@quiet}{almaondark}}{\tiny\expandafter\url\expandafter{\ams@link@arg}}}}
+%% DOI: likewise. https://doi.org is the current resolver; dx.doi.org is a
+%% deprecated alias, and the .bst reaches these through \dddoi, so this is the
+%% only place the resolver is named
+\newcommand{\ddoi}[1]{{\ams@link@string\ams@link@arg{#1}%
+  \textcolor{\ams@onsurface{almalink}{almaondark}}{\scriptsize\href{https://doi.org/\ams@link@arg}{DOI:\ams@link@arg}}}}
+\newcommand{\dddoi}[1]{{\ams@link@string\ams@link@arg{#1}%
+  \textcolor{\ams@onsurface{\ams@quiet}{almaondark}}{\tiny\href{https://doi.org/\ams@link@arg}{DOI:\ams@link@arg}}}}
+%% APICe addresses, printed short and linked: \apice{<kind>}{<Name>} for an
+%% object, \apicesite{<alias>} for an alias host, \apicepage{<Space/Page>} for any
+%% other page; [<text>] in front prints the text instead. Colour from the
+%% surface; doubled = smaller, quiet on a light one. The kinds and their short hosts are this one table -- see README.md
+\newcommand{\ams@apice@host@pub}{pubs}
+\newcommand{\ams@apice@host@talk}{talks}
+\newcommand{\ams@apice@host@course}{courses}
+\newcommand{\ams@apice@host@event}{events}
+%% theses, journals, projects, products: a line each, once their short hosts
+%% resolve page by page
+\newcommand{\ams@apice@addr}{}
+\newcommand{\ams@apice@obj}[2]{%
+  \ifcsname ams@apice@host@#1\endcsname
+    \ams@link@string\ams@link@arg{#2}%
+    \edef\ams@apice@addr{\csname ams@apice@host@#1\endcsname.apice.unibo.it/\ams@link@arg}%
+  \else
+    \PackageError{beamerthemealmamater}{Unknown APICe kind `#1'}%
+      {The kinds are pub, talk, course, event.}%
+    \def\ams@apice@addr{apice.unibo.it}%
+  \fi}
+\newcommand{\ams@apice@show}[1]{\href{https://#1}{\nolinkurl{#1}}}
+\newcommand{\ams@apice@text}[2]{\href{https://#1}{#2}}
+%% #1 colour, #2 size, #3 the optional text or -NoValue-
+\newcommand{\ams@apice@link}[3]{\textcolor{#1}{#2\IfNoValueTF{#3}%
+  {\expandafter\ams@apice@show\expandafter{\ams@apice@addr}}%
+  {\expandafter\ams@apice@text\expandafter{\ams@apice@addr}{#3}}}}
+\NewDocumentCommand{\apice}{o m m}{{\ams@apice@obj{#2}{#3}\ams@apice@link{\ams@onsurface{almalink}{almaondark}}{\scriptsize}{#1}}}
+\NewDocumentCommand{\aapice}{o m m}{{\ams@apice@obj{#2}{#3}\ams@apice@link{\ams@onsurface{\ams@quiet}{almaondark}}{\tiny}{#1}}}
+\NewDocumentCommand{\apicesite}{o m}{{\ams@link@string\ams@link@arg{#2}%
+  \edef\ams@apice@addr{\ams@link@arg.apice.unibo.it}%
+  \ams@apice@link{\ams@onsurface{almalink}{almaondark}}{\scriptsize}{#1}}}
+\NewDocumentCommand{\aapicesite}{o m}{{\ams@link@string\ams@link@arg{#2}%
+  \edef\ams@apice@addr{\ams@link@arg.apice.unibo.it}%
+  \ams@apice@link{\ams@onsurface{\ams@quiet}{almaondark}}{\tiny}{#1}}}
+\NewDocumentCommand{\apicepage}{o m}{{\ams@link@string\ams@link@arg{#2}%
+  \edef\ams@apice@addr{apice.unibo.it/bin/view/\ams@link@arg}%
+  \ams@apice@link{\ams@onsurface{almalink}{almaondark}}{\scriptsize}{#1}}}
+\NewDocumentCommand{\aapicepage}{o m}{{\ams@link@string\ams@link@arg{#2}%
+  \edef\ams@apice@addr{apice.unibo.it/bin/view/\ams@link@arg}%
+  \ams@apice@link{\ams@onsurface{\ams@quiet}{almaondark}}{\tiny}{#1}}}
+%% emph -- in a block title, the title's own colour: italic only
+%% block and alerted block titles are dark surfaces, the example one light
+\def\ams@emph@colour{almaemph}
+\renewcommand{\emph}[1]{\textcolor{\ams@emph@colour}{\textit{#1}}}
+%% alert: amsred, light on a dark surface (the hooks above); aalert: quiet, italic
+%\renewcommand{\alert}[1]{\textcolor{amsred}{#1}}
+\newcommand{\aalert}[1]{\textcolor{\ams@onsurface{almasoft}{almafaint}}{\it#1}}
+%% speaker -- both bold: the point is to stand out, and colour alone could not do it.
+%% \speaker keeps amsred for the title page; \sspeaker inherits its surface's colour,
+%% so it works white-on-green in the footline and dark on a light surface alike
+\newcommand{\speaker}[1]{\textcolor{almaspeaker}{\textbf{#1}}}
+\newcommand{\sspeaker}[1]{\textbf{#1}}
+%
+\usepackage[T1]{fontenc}
+%% workarounds, so that no document has to carry them -- see README.md
+%% commands that cannot survive hyperref's PDF-string expansion.  The two
+%% replacements below are \let into place, so that no parameter token ever
+%% reaches \pdfstringdefDisableCommands, where it would not survive either.
+%% a citation says nothing in a bookmark, and the note has to go with the keys:
+%% only an expandable form is expanded away whole -- \NewDocumentCommand is
+%% unexpandable, so hyperref would drop the name and leave [note]{keys} behind
+\NewExpandableDocumentCommand{\ams@nocite}{o m}{}
+%% the DOI is worth keeping in a bookmark, resolver and colour are not
+\newcommand{\ams@nodoi}[1]{DOI:#1}
+%% an APICe address in a bookmark: the text if one is given, else the address
+\NewExpandableDocumentCommand{\ams@noapice}{o m m}{\IfNoValueTF{#1}{\csname ams@apice@host@#2\endcsname.apice.unibo.it/#3}{#1}}
+\NewExpandableDocumentCommand{\ams@noapicesite}{o m}{\IfNoValueTF{#1}{#2.apice.unibo.it}{#1}}
+\NewExpandableDocumentCommand{\ams@noapicepage}{o m}{\IfNoValueTF{#1}{apice.unibo.it/bin/view/#2}{#1}}
+\ifdefined\pdfstringdefDisableCommands
+  \pdfstringdefDisableCommands{%
+    \let\speaker\@firstofone
+    \let\sspeaker\@firstofone
+    \let\ccite\ams@nocite
+    \let\cccite\ams@nocite
+    \let\uurl\@firstofone
+    \let\uuurl\@firstofone
+    \let\wwwurl\@firstofone
+    \let\ddoi\ams@nodoi
+    \let\dddoi\ams@nodoi
+    \let\apicepubpar\@gobble
+    \let\apicetalkpar\@gobble
+    \let\apicethesispar\@gobble
+    \let\apice\ams@noapice
+    \let\aapice\ams@noapice
+    \let\apicesite\ams@noapicesite
+    \let\aapicesite\ams@noapicesite
+    \let\apicepage\ams@noapicepage
+    \let\aapicepage\ams@noapicepage
+    \let\translate\@firstofone
+    \let\\\space
+  }
+\fi
+%% safety net: Computer Modern Sans has no small-caps shape, so a deck that
+%% overrides the family back to it would hit the missing shape again
+\DeclareFontShape{T1}{cmss}{m}{sc}{<->ssub*cmr/m/sc}{}
+%
+\mode
+<all>

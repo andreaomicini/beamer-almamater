@@ -1,0 +1,118 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Copyright 2026 by Andrea Omicini <andrea.omicini@unibo.it>
+%
+% This work may be distributed and/or modified under the conditions of the
+% LaTeX Project Public License, either version 1.3c of this license or (at
+% your option) any later version.  The latest version of this license is in
+%   https://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX version
+% 2008 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+% The Current Maintainer of this work is Andrea Omicini.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The AMSSilverBlue palette, recovered from AMSCesenaBleu: each colour carries
+%% its provenance beside it. Roles and contrasts: README.md.
+
+\mode<presentation>
+
+%% base colours
+\definecolor{sbblue}{HTML}{0073BA}         % French Blue, frenchblue in AMSCesenaBleu
+\definecolor{sbbluedark}{HTML}{00568C}     % frenchblue!75!black, Bleu bibliography note
+\definecolor{sbbluedeep}{HTML}{003F66}     % frenchblue!55!black, Bleu block title
+\definecolor{sbbluelight}{HTML}{B2D5EA}    % frenchblue!30!white, Bleu example block title
+\definecolor{sbbluetint}{HTML}{EBF4F9}     % frenchblue!8!white, between Bleu block bodies (4%) and AMSUniBo tints
+\definecolor{sbblack}{HTML}{000000}        % black
+\definecolor{sbtext}{HTML}{000C13}         % frenchblue!10!black, Bleu normal text
+\definecolor{sbsilver}{HTML}{B3B3B3}       % gray!60!white, beamer beaver frame title right
+\definecolor{sbsilvertint}{HTML}{F2F2F2}   % gray!10!white, beaver frame title
+\definecolor{sbsilvertint2}{HTML}{D9D9D9}  % gray!30!white, beaver palette primary
+\definecolor{sbgrey}{HTML}{404040}         % darkgray, Bleu quote
+\definecolor{sbgreymid}{HTML}{5A5A5A}      % gray!70!black, guessed: secondary text
+\definecolor{sbgreyline}{HTML}{BFBFBF}     % lightgray, Bleu \cccite and \uuurl
+\definecolor{sbgreybg}{HTML}{ECECEC}       % gray!15!white, beaver palette secondary
+\definecolor{sbbluefill}{HTML}{DEEDF6}     % derived as amsredfill from amsred (13%)
+\definecolor{sbblueborder}{HTML}{B5D6EB}   % derived as amsredborder (29%)
+\definecolor{sbsilverfill}{HTML}{F1F1F1}   % silver!18!white, derived as amsgreenfill from amsgreen (18%)
+\definecolor{sbsilverborder}{HTML}{DCDCDC} % silver!46!white, derived as amsgreenborder (46%)
+\definecolor{sbwhite}{HTML}{FFFFFF}
+\definecolor{basecolour}{HTML}{0073BA} % blue
+
+%% blue is the identity colour, deep blue and silver the structural one
+\setbeamercolor{structure}{fg=sbbluedeep}
+\setbeamercolor{section in toc}{fg=sbbluedeep,bg=sbwhite}
+\setbeamercolor{alerted text}{fg=sbblue}
+
+%% palettes, light to loud; quaternary carries the identity bar
+\setbeamercolor*{palette primary}{fg=sbgreymid,bg=sbsilvertint}
+\setbeamercolor*{palette secondary}{fg=sbtext,bg=sbsilvertint2}
+\setbeamercolor*{palette tertiary}{fg=sbwhite,bg=sbbluedeep}
+\setbeamercolor*{palette quaternary}{fg=sbwhite,bg=sbblue}
+
+\setbeamercolor*{sidebar}{fg=sbbluedeep,bg=sbsilvertint}
+\setbeamercolor*{palette sidebar primary}{fg=sbtext}
+\setbeamercolor*{palette sidebar secondary}{fg=sbgreymid}
+\setbeamercolor*{palette sidebar tertiary}{fg=sbbluedeep}
+\setbeamercolor*{palette sidebar quaternary}{fg=sbwhite}
+
+%% title and frame title
+\setbeamercolor{titlelike}{parent=palette primary,fg=sbblack}
+\setbeamercolor{frametitle}{fg=sbblack,bg=sbsilvertint}
+\setbeamercolor{frametitle right}{bg=sbsilvertint2}
+
+%% rules
+\setbeamercolor*{separation line}{fg=sbsilver}
+\setbeamercolor*{fine separation line}{fg=sbgreyline}
+
+\def\almamater@colourtheme{silverblue}
+%% roles: the colours almamater's commands name
+\colorlet{almamarker}{sbbluedeep}
+\colorlet{almaemph}{sbbluedeep}
+\colorlet{almalink}{sbblue}
+\colorlet{almaspeaker}{sbblue}
+\colorlet{almaondark}{sbgreybg}
+\colorlet{almaquiet}{sbgreyline}
+\colorlet{almafaint}{sbgreyline}
+\colorlet{almasoft}{sbgreymid}
+% elements, as the AMSSilverBlue theme set them
+\setbeamercolor{background canvas}{bg=sbwhite}
+\setbeamercolor{normal text}{fg=sbtext}
+\setbeamercolor{alerted text}{fg=sbblue}
+\setbeamercolor{quote}{fg=sbgreymid}
+\setbeamercolor*{item}{fg=sbblue}
+\setbeamercolor{title}{fg=sbblack}
+\setbeamercolor{subtitle}{fg=sbgreymid}
+\setbeamercolor{author}{fg=sbblue}
+\setbeamercolor{institute}{fg=sbgrey}
+\setbeamercolor{date}{fg=sbgreymid}
+\setbeamercolor{section in head/foot}{fg=sbwhite,bg=sbblue}
+\setbeamercolor{subsection in head/foot}{fg=sbtext,bg=sbsilvertint2}
+\setbeamercolor{author in head/foot}{fg=sbwhite,bg=sbbluedeep}
+\setbeamercolor{title in head/foot}{fg=sbtext,bg=sbsilvertint2}
+\setbeamercolor{date in head/foot}{fg=sbgreymid,bg=sbsilvertint}
+\setbeamercolor{block title}{use=structure,fg=sbwhite,bg=sbbluedeep}
+\setbeamercolor{block title alerted}{use=alerted text,fg=sbwhite,bg=sbblue}
+\setbeamercolor{block title example}{use=example text,fg=sbtext,bg=sbsilverborder}
+\setbeamercolor{block body}{parent=normal text,use=block title,bg=sbbluetint}
+\setbeamercolor{block body alerted}{parent=normal text,use=block title alerted,bg=sbbluefill}
+\setbeamercolor{block body example}{parent=normal text,use=block title example,bg=sbsilverfill}
+\setbeamercolor{section in toc}{fg=sbbluedeep}
+\setbeamercolor{subsection in toc}{fg=sbgreymid}
+\setbeamercolor{footnote mark}{fg=sbblue}
+\setbeamercolor{footnote}{fg=sbgreymid}
+\setbeamercolor{bibliography item}{fg=sbgreymid}
+\setbeamercolor{bibliography entry author}{fg=sbtext}
+\setbeamercolor{bibliography entry title}{fg=sbblue}
+\setbeamercolor{bibliography entry location}{fg=sbgreymid}
+\setbeamercolor{bibliography entry note}{fg=sbbluedeep}
+\setbeamercolor*{abstract title}{fg=sbbluedeep}
+\setbeamercolor*{abstract}{fg=sbgreymid}
+%% surfaces: which block titles are dark
+\addtobeamertemplate{block begin}{\def\ams@emph@colour{.}\ams@darktrue\setbeamercolor{alerted text}{fg=sbgreyline}}
+  {\def\ams@emph@colour{sbbluedeep}\ams@darkfalse\setbeamercolor{alerted text}{fg=sbblue}}
+\addtobeamertemplate{block alerted begin}{\def\ams@emph@colour{.}\ams@darktrue\setbeamercolor{alerted text}{fg=sbgreyline}}
+  {\def\ams@emph@colour{sbbluedeep}\ams@darkfalse\setbeamercolor{alerted text}{fg=sbblue}}
+\addtobeamertemplate{block example begin}{\def\ams@emph@colour{.}\def\ams@quiet{sbgreymid}}
+  {\def\ams@emph@colour{sbbluedeep}\def\ams@quiet{sbgreyline}}
+\mode
+<all>

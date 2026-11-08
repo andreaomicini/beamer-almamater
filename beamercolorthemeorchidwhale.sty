@@ -1,0 +1,121 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Copyright 2026 by Andrea Omicini <andrea.omicini@unibo.it>
+%
+% This work may be distributed and/or modified under the conditions of the
+% LaTeX Project Public License, either version 1.3c of this license or (at
+% your option) any later version.  The latest version of this license is in
+%   https://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX version
+% 2008 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+% The Current Maintainer of this work is Andrea Omicini.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The AMSCesena palette, recovered from CesenaSMA2006 (Beamer's orchid and
+%% whale over its default blue): each colour carries its provenance beside it.
+%% Roles and contrasts: README.md.
+
+\mode<presentation>
+
+%% base colours
+\definecolor{owblue}{HTML}{3333B2}         % beamer@blendedblue, the 2006 structure
+\definecolor{owbluedeep}{HTML}{262686}     % structure!75!black, whale secondary, orchid block title
+\definecolor{owbluedark}{HTML}{1A1A59}     % structure!50!black, whale tertiary
+\definecolor{owbluelight}{HTML}{C2C2E8}    % structure!30!white, guessed: the light blue
+\definecolor{owbluetint}{HTML}{E9E9F3}     % orchid block body, block title!10!white
+\definecolor{owbluepale}{HTML}{EBEBF7}     % structure!10, whale sidebar primary
+\definecolor{owbluemid}{HTML}{9999D9}      % structure!50, whale sidebar tertiary
+\definecolor{owred}{HTML}{FF0000}          % red, Beamer's alerted text
+\definecolor{owreddeep}{HTML}{BF0000}      % red!75!black, orchid alerted block title
+\definecolor{owredfill}{HTML}{F9E6E6}      % orchid alerted block body
+\definecolor{owgreen}{HTML}{008000}        % green!50!black, Beamer's example text
+\definecolor{owgreendeep}{HTML}{006000}    % example text!75!black, orchid example block title
+\definecolor{owgreenfill}{HTML}{E6EFE6}    % orchid example block body
+\definecolor{owblack}{HTML}{000000}        % black, whale quaternary
+\definecolor{owtext}{HTML}{000000}         % black, Beamer's normal text
+\definecolor{owgrey}{HTML}{404040}         % darkgray, guessed: institute
+\definecolor{owgreymid}{HTML}{5A5A5A}      % gray!70!black, guessed: secondary text
+\definecolor{owgreyline}{HTML}{BFBFBF}     % lightgray, guessed: \ccite, \uuurl
+\definecolor{owgreybg}{HTML}{ECECEC}       % gray!15!white, guessed: \cccite
+\definecolor{owwhite}{HTML}{FFFFFF}
+\definecolor{basecolour}{HTML}{3333B2} % blue
+
+%% blue is the identity colour, deep blue the structural one
+\setbeamercolor{structure}{fg=owblue}
+\setbeamercolor{section in toc}{fg=owbluedeep,bg=owwhite}
+\setbeamercolor{alerted text}{fg=owred}
+\setbeamercolor{example text}{fg=owgreen}
+
+%% palettes, whale's: blue to black
+\setbeamercolor*{palette primary}{fg=owwhite,bg=owblue}
+\setbeamercolor*{palette secondary}{fg=owwhite,bg=owbluedeep}
+\setbeamercolor*{palette tertiary}{fg=owwhite,bg=owbluedark}
+\setbeamercolor*{palette quaternary}{fg=owwhite,bg=owblack}
+
+\setbeamercolor*{sidebar}{bg=owblue}
+\setbeamercolor*{palette sidebar primary}{fg=owbluepale}
+\setbeamercolor*{palette sidebar secondary}{fg=owwhite}
+\setbeamercolor*{palette sidebar tertiary}{fg=owbluemid}
+\setbeamercolor*{palette sidebar quaternary}{fg=owwhite}
+
+%% title and frame title -- the title in whale's blue box, frame titles blue on white
+\setbeamercolor{titlelike}{parent=palette primary}
+\setbeamercolor{frametitle}{fg=owblue,bg=owwhite}
+\setbeamercolor{frametitle right}{bg=owwhite}
+
+%% rules
+\setbeamercolor*{separation line}{fg=owbluelight}
+\setbeamercolor*{fine separation line}{fg=owgreyline}
+
+\def\almamater@colourtheme{orchidwhale}
+%% roles: the colours almamater's commands name
+\colorlet{almamarker}{owbluedeep}
+\colorlet{almaemph}{owbluedeep}
+\colorlet{almalink}{owblue}
+\colorlet{almaspeaker}{owblue}
+\colorlet{almaondark}{owgreybg}
+\colorlet{almaquiet}{owgreyline}
+\colorlet{almafaint}{owgreyline}
+\colorlet{almasoft}{owgreymid}
+% elements, as the AMSCesena theme set them
+\setbeamercolor{background canvas}{bg=owwhite}
+\setbeamercolor{normal text}{fg=owtext}
+\setbeamercolor{alerted text}{fg=owred}
+\setbeamercolor{quote}{fg=owgreymid}
+\setbeamercolor*{item}{fg=owblue}
+\setbeamercolor{title}{fg=owwhite,bg=owblue}
+\setbeamercolor{subtitle}{fg=owwhite}
+\setbeamercolor{author}{fg=owblue}
+\setbeamercolor{institute}{fg=owgrey}
+\setbeamercolor{date}{fg=owgreymid}
+\setbeamercolor{section in head/foot}{fg=owwhite,bg=owblack}
+\setbeamercolor{subsection in head/foot}{fg=owwhite,bg=owbluedeep}
+\setbeamercolor{author in head/foot}{fg=owwhite,bg=owblack}
+\setbeamercolor{title in head/foot}{fg=owwhite,bg=owbluedeep}
+\setbeamercolor{date in head/foot}{fg=owwhite,bg=owblue}
+\setbeamercolor{block title}{use=structure,fg=owwhite,bg=owbluedeep}
+\setbeamercolor{block title alerted}{use=alerted text,fg=owwhite,bg=owreddeep}
+\setbeamercolor{block title example}{use=example text,fg=owwhite,bg=owgreendeep}
+\setbeamercolor{block body}{parent=normal text,use=block title,bg=owbluetint}
+\setbeamercolor{block body alerted}{parent=normal text,use=block title alerted,bg=owredfill}
+\setbeamercolor{block body example}{parent=normal text,use=block title example,bg=owgreenfill}
+\setbeamercolor{section in toc}{fg=owbluedeep}
+\setbeamercolor{subsection in toc}{fg=owgreymid}
+\setbeamercolor{footnote mark}{fg=owblue}
+\setbeamercolor{footnote}{fg=owgreymid}
+\setbeamercolor{bibliography item}{fg=owgreymid}
+\setbeamercolor{bibliography entry author}{fg=owtext}
+\setbeamercolor{bibliography entry title}{fg=owblue}
+\setbeamercolor{bibliography entry location}{fg=owgreymid}
+\setbeamercolor{bibliography entry note}{fg=owbluedeep}
+\setbeamercolor*{abstract title}{fg=owbluedeep}
+\setbeamercolor*{abstract}{fg=owgreymid}
+%% surfaces: which block titles are dark
+\addtobeamertemplate{block begin}{\def\ams@emph@colour{.}\ams@darktrue\setbeamercolor{alerted text}{fg=owgreyline}}
+  {\def\ams@emph@colour{owbluedeep}\ams@darkfalse\setbeamercolor{alerted text}{fg=owred}}
+\addtobeamertemplate{block alerted begin}{\def\ams@emph@colour{.}\ams@darktrue\setbeamercolor{alerted text}{fg=owgreyline}}
+  {\def\ams@emph@colour{owbluedeep}\ams@darkfalse\setbeamercolor{alerted text}{fg=owred}}
+\addtobeamertemplate{block example begin}{\def\ams@emph@colour{.}\ams@darktrue\setbeamercolor{alerted text}{fg=owgreyline}}
+  {\def\ams@emph@colour{owbluedeep}\ams@darkfalse\setbeamercolor{alerted text}{fg=owred}}
+\mode
+<all>

@@ -1,0 +1,50 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Copyright 2026 by Andrea Omicini <andrea.omicini@unibo.it>
+%
+% This work may be distributed and/or modified under the conditions of the
+% LaTeX Project Public License, either version 1.3c of this license or (at
+% your option) any later version.  The latest version of this license is in
+%   https://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX version
+% 2008 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+% The Current Maintainer of this work is Andrea Omicini.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% amsmerriweather: the faces of the AMSUniBo theme for the APICe wiki
+\def\almamater@fonttheme{amsmerriweather}
+\mode<presentation>
+%% typography -- the web theme's own faces, all Type 1 under pdfLaTeX; README.md
+%% text: Merriweather Sans body, Merriweather serif headings, as the web theme's h1/h2
+%% scaled: Merriweather's x-height runs large, so 0.92 matches the old apparent size
+\usepackage[rm,sfdefault,sflight,type1,scaled=0.92]{merriweather}
+\setbeamerfont{title}{family=\rmfamily}
+\setbeamerfont{subtitle}{family=\rmfamily}
+\setbeamerfont{frametitle}{family=\rmfamily}
+%% body weight 300, as the web theme has it; \seriesdefault is the load-bearing one,
+%% since the package resets it to the serif family's series
+\renewcommand{\mddefault}{light}
+\renewcommand{\seriesdefault}{light}
+%% block titles stay at medium, so a header still outweighs its own contents
+\newcommand{\medseries}{\fontseries{m}\selectfont}
+\setbeamerfont{block title}{series=\medseries}
+\setbeamerfont{block title alerted}{series=\medseries}
+\setbeamerfont{block title example}{series=\medseries}
+%% a light default asks every family for a light series; these three have none,
+%% and each must wait for its .fd to load -- see README.md for adding others
+\AtBeginDocument{%
+  \DeclareFontShape{OT1}{cmss}{light}{n}{<->ssub*cmss/m/n}{}%
+  \makeatletter\input{t1zi4.fd}\makeatother%
+  \DeclareFontShape{T1}{zi4}{light}{n}{<->ssub*zi4/m/n}{}%
+  \@ifpackageloaded{wasysym}{%
+    \input{uwasy.fd}%
+    \DeclareFontShape{U}{wasy}{light}{n}{<->ssub*wasy/m/n}{}%
+  }{}%
+}
+%% code: matches the body weight and is narrower than cmtt; varqu keeps quotes straight
+\usepackage[varqu,varl]{inconsolata}
+%% math: sans, to sit with the sans body; anyfontsize absorbs the 5.5/6.5pt substitutions
+\usepackage{newtxsf}
+\usepackage{anyfontsize}
+\mode
+<all>

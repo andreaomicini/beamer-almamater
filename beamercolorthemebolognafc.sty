@@ -1,0 +1,97 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Copyright 2019-2026 by Andrea Omicini <andrea.omicini@unibo.it>
+%
+% This work may be distributed and/or modified under the conditions of the
+% LaTeX Project Public License, either version 1.3c of this license or (at
+% your option) any later version.  The latest version of this license is in
+%   https://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX version
+% 2008 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+% The Current Maintainer of this work is Andrea Omicini.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\mode<presentation>
+
+%%%% Setting base colour
+%% Bologna Blue #1A2F48
+\definecolor{bolognafcblue}{RGB}{26,47,72}
+%% Bologna Red #A21C26	
+\definecolor{bolognafcred}{RGB}{162,28,38}
+%% Bologna White #FFFFFF	
+\definecolor{bolognafcwhite}{RGB}{255,255,255}
+%% Bologna Silver #ECECEC	
+\definecolor{bolognafcsilver}{RGB}{236,236,236}
+%% Base colour for slides
+\definecolor{basecolour}{RGB}{26,47,72} % Bologna Blue
+%%%%
+
+\setbeamercolor{section in toc}{fg=bolognafcblue!10!black,bg=white}
+\setbeamercolor{alerted text}{fg=bolognafcblue!80!gray}
+\setbeamercolor*{palette primary}{fg=bolognafcblue!60!black,bg=gray!30!white}
+\setbeamercolor*{palette secondary}{fg=bolognafcblue!70!black,bg=gray!15!white}
+\setbeamercolor*{palette tertiary}{bg=bolognafcblue!80!black,fg=gray!10!white}
+\setbeamercolor*{palette quaternary}{fg=bolognafcblue,bg=gray!5!white}
+
+\setbeamercolor*{sidebar}{fg=bolognafcblue,bg=gray!15!white}
+
+\setbeamercolor*{palette sidebar primary}{fg=bolognafcblue!10!black}
+\setbeamercolor*{palette sidebar secondary}{fg=white}
+\setbeamercolor*{palette sidebar tertiary}{fg=bolognafcblue!50!black}
+\setbeamercolor*{palette sidebar quaternary}{fg=gray!10!white}
+
+\setbeamercolor{titlelike}{parent=palette primary,fg=bolognafcblue}
+\setbeamercolor{frametitle}{bg=gray!10!white}
+\setbeamercolor{frametitle right}{bg=gray!60!white}
+
+\setbeamercolor*{separation line}{fg=bolognafcsilver}
+\setbeamercolor*{fine separation line}{fg=bolognafcsilver}
+
+\def\almamater@colourtheme{bolognafc}
+%% roles: the colours almamater's commands name
+\colorlet{almamarker}{bolognafcsilver!90!black}
+\colorlet{almaemph}{bolognafcblue!50!black}
+\colorlet{almalink}{bolognafcred!75!black}
+\colorlet{almaspeaker}{bolognafcblue!75!red}
+\colorlet{almaondark}{bolognafcsilver}
+\colorlet{almaquiet}{bolognafcsilver!80!black}
+\colorlet{almafaint}{bolognafcsilver!90!black}
+\colorlet{almasoft}{bolognafcblue!25!gray}
+% elements, as the AMSBolognaFC theme set them
+\setbeamercolor{background canvas}{bg=bolognafcwhite}
+\setbeamercolor{normal text}{fg=bolognafcblue!10!black}
+\setbeamercolor{alerted text}{fg=bolognafcred!90!black}
+\setbeamercolor{quote}{fg=bolognafcblue!80!white}
+\setbeamercolor*{item}{fg=bolognafcred}
+\setbeamercolor{title}{fg=bolognafcblue!90!black}
+\setbeamercolor{subtitle}{fg=bolognafcblue!90!white}
+\setbeamercolor{author}{fg=bolognafcred!90!black}
+\setbeamercolor{institute}{fg=bolognafcblue!75!black}
+\setbeamercolor{date}{fg=bolognafcblue!75!white}
+\setbeamercolor{block title}{use=structure,fg=bolognafcsilver!90!white,bg=bolognafcblue!75!black}
+\setbeamercolor{block title alerted}{use=alerted text,fg=bolognafcsilver!50!white,bg=bolognafcblue!35!black}
+\setbeamercolor{block title example}{use=example text,fg=bolognafcblue!30!black,bg=bolognafcblue!30!white}
+\setbeamercolor{block body}{parent=normal text,use=block title,bg=bolognafcblue!2!white}
+\setbeamercolor{block body alerted}{parent=normal text,use=block title alerted,bg=bolognafcblue!5!white}
+\setbeamercolor{block body example}{parent=normal text,use=block title example,bg=bolognafcblue!7!white}
+\setbeamercolor{section in toc}{fg=bolognafcblue!40!black}
+\setbeamercolor{subsection in toc}{fg=bolognafcblue!50!black}
+\setbeamercolor{footnote mark}{fg=bolognafcred!90!black}
+\setbeamercolor{footnote}{fg=bolognafcblue!25!gray}
+\setbeamercolor{bibliography item}{fg=bolognafcblue!60!gray}
+\setbeamercolor{bibliography entry author}{fg=bolognafcblue!90!black}
+\setbeamercolor{bibliography entry title}{fg=bolognafcred!75!black} 
+\setbeamercolor{bibliography entry location}{fg=bolognafcblue!75!gray} 
+\setbeamercolor{bibliography entry note}{fg=bolognafcsilver!50!black}  
+\setbeamercolor*{abstract title}{fg=bolognafcblue}
+\setbeamercolor*{abstract}{fg=purple!50!black}
+%% surfaces: which block titles are dark
+\addtobeamertemplate{block begin}{\def\ams@emph@colour{.}\ams@darktrue\setbeamercolor{alerted text}{fg=bolognafcsilver!90!black}}
+  {\def\ams@emph@colour{bolognafcblue!50!black}\ams@darkfalse\setbeamercolor{alerted text}{fg=bolognafcred!90!black}}
+\addtobeamertemplate{block alerted begin}{\def\ams@emph@colour{.}\ams@darktrue\setbeamercolor{alerted text}{fg=bolognafcsilver!90!black}}
+  {\def\ams@emph@colour{bolognafcblue!50!black}\ams@darkfalse\setbeamercolor{alerted text}{fg=bolognafcred!90!black}}
+\addtobeamertemplate{block example begin}{\def\ams@emph@colour{.}\def\ams@quiet{bolognafcblue!25!gray}}
+  {\def\ams@emph@colour{bolognafcblue!50!black}\def\ams@quiet{bolognafcsilver!80!black}}
+\mode
+<all>

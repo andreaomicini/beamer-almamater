@@ -1,0 +1,118 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Copyright 2026 by Andrea Omicini <andrea.omicini@unibo.it>
+%
+% This work may be distributed and/or modified under the conditions of the
+% LaTeX Project Public License, either version 1.3c of this license or (at
+% your option) any later version.  The latest version of this license is in
+%   https://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX version
+% 2008 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+% The Current Maintainer of this work is Andrea Omicini.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The AMSPurpleAndGold palette, recovered from AMSCesenaPurpleAndGold: each colour carries
+%% its provenance beside it. Roles and contrasts: README.md.
+
+\mode<presentation>
+
+%% base colours
+\definecolor{pggold}{HTML}{D4AF38}         % Gold (metallic), gold(metallic) in AMSCesenaPurpleAndGold
+\definecolor{pggolddark}{HTML}{7F6922}     % gold(metallic)!60!black, guessed: the darkest gold still read as gold, at AA on white
+\definecolor{pggoldpale}{HTML}{EDE8AB}     % Pale Goldenrod, palegoldenrod in AMSCesenaPurpleAndGold
+\definecolor{pgpurple}{HTML}{660066}       % Cesena Purple, cesenapurple in AMSCesenaPurpleAndGold
+\definecolor{pgpurpledeep}{HTML}{380038}   % cesenapurple!55!black, P&G block title
+\definecolor{pgpurplelight}{HTML}{D1B2D1}  % cesenapurple!30!white, P&G example block title
+\definecolor{pgpurpletint}{HTML}{F4EDF4}   % cesenapurple!7!white, P&G example block body
+\definecolor{pgpurpletint2}{HTML}{E8D9E8}  % cesenapurple!15!white, guessed: between tint and light
+\definecolor{pgblack}{HTML}{000000}        % black
+\definecolor{pgtext}{HTML}{0A000A}         % cesenapurple!10!black, P&G normal text
+\definecolor{pggrey}{HTML}{4A304A}         % guessed: darkgray with a purple cast
+\definecolor{pggreymid}{HTML}{5D445D}      % cesenapurple!25!gray darkened to AA, P&G footnote
+\definecolor{pggreyline}{HTML}{BEBA89}     % palegoldenrod!80!black, P&G \cccite and \uuurl
+\definecolor{pggreybg}{HTML}{EDE8AB}       % palegoldenrod, the lightest of the pair
+\definecolor{pggoldfill}{HTML}{F9F5E5}     % derived as amsredfill (13%)
+\definecolor{pggoldborder}{HTML}{F3E8C5}   % derived as amsredborder (29%)
+\definecolor{pgpurplefill}{HTML}{F4EDF4}   % cesenapurple!7!white, P&G example body
+\definecolor{pgpurpleborder}{HTML}{D1B2D1} % cesenapurple!30!white, P&G example title
+\definecolor{pgwhite}{HTML}{FFFFFF}
+\definecolor{basecolour}{HTML}{660066} % purple
+
+%% gold is the identity colour, purple the structural one
+\setbeamercolor{structure}{fg=pgpurple}
+\setbeamercolor{section in toc}{fg=pgpurple,bg=pgwhite}
+\setbeamercolor{alerted text}{fg=pggolddark}
+
+%% palettes, light to loud; quaternary carries the identity bar
+\setbeamercolor*{palette primary}{fg=pggreymid,bg=pgpurpletint}
+\setbeamercolor*{palette secondary}{fg=pgtext,bg=pgpurpletint2}
+\setbeamercolor*{palette tertiary}{fg=pggoldpale,bg=pgpurple}
+\setbeamercolor*{palette quaternary}{fg=pgpurpledeep,bg=pggold}
+
+\setbeamercolor*{sidebar}{fg=pgpurple,bg=pgpurpletint}
+\setbeamercolor*{palette sidebar primary}{fg=pgtext}
+\setbeamercolor*{palette sidebar secondary}{fg=pggreymid}
+\setbeamercolor*{palette sidebar tertiary}{fg=pgpurple}
+\setbeamercolor*{palette sidebar quaternary}{fg=pgwhite}
+
+%% title and frame title
+\setbeamercolor{titlelike}{parent=palette primary,fg=pgblack}
+\setbeamercolor{frametitle}{fg=pgblack,bg=pgpurpletint}
+\setbeamercolor{frametitle right}{bg=pgpurpletint2}
+
+%% rules
+\setbeamercolor*{separation line}{fg=pgpurple}
+\setbeamercolor*{fine separation line}{fg=pggreyline}
+
+\def\almamater@colourtheme{purpleandgold}
+%% roles: the colours almamater's commands name
+\colorlet{almamarker}{pgpurple}
+\colorlet{almaemph}{pgpurple}
+\colorlet{almalink}{pggolddark}
+\colorlet{almaspeaker}{pggolddark}
+\colorlet{almaondark}{pggreybg}
+\colorlet{almaquiet}{pggreyline}
+\colorlet{almafaint}{pggreyline}
+\colorlet{almasoft}{pggreymid}
+% elements, as the AMSPurpleAndGold theme set them
+\setbeamercolor{background canvas}{bg=pgwhite}
+\setbeamercolor{normal text}{fg=pgtext}
+\setbeamercolor{alerted text}{fg=pggolddark}
+\setbeamercolor{quote}{fg=pggreymid}
+\setbeamercolor*{item}{fg=pggolddark}
+\setbeamercolor{title}{fg=pgblack}
+\setbeamercolor{subtitle}{fg=pggreymid}
+\setbeamercolor{author}{fg=pggolddark}
+\setbeamercolor{institute}{fg=pggrey}
+\setbeamercolor{date}{fg=pggreymid}
+\setbeamercolor{section in head/foot}{fg=pgpurpledeep,bg=pggold}
+\setbeamercolor{subsection in head/foot}{fg=pgtext,bg=pgpurpletint2}
+\setbeamercolor{author in head/foot}{fg=pggoldpale,bg=pgpurple}
+\setbeamercolor{title in head/foot}{fg=pgtext,bg=pgpurpletint2}
+\setbeamercolor{date in head/foot}{fg=pggreymid,bg=pgpurpletint}
+\setbeamercolor{block title}{use=structure,fg=pggoldpale,bg=pgpurple}
+\setbeamercolor{block title alerted}{use=alerted text,fg=pggoldpale,bg=pgpurpledeep}
+\setbeamercolor{block title example}{use=example text,fg=pgtext,bg=pgpurpleborder}
+\setbeamercolor{block body}{parent=normal text,use=block title,bg=pgpurpletint}
+\setbeamercolor{block body alerted}{parent=normal text,use=block title alerted,bg=pggoldfill}
+\setbeamercolor{block body example}{parent=normal text,use=block title example,bg=pgpurplefill}
+\setbeamercolor{section in toc}{fg=pgpurple}
+\setbeamercolor{subsection in toc}{fg=pggreymid}
+\setbeamercolor{footnote mark}{fg=pggolddark}
+\setbeamercolor{footnote}{fg=pggreymid}
+\setbeamercolor{bibliography item}{fg=pggreymid}
+\setbeamercolor{bibliography entry author}{fg=pgtext}
+\setbeamercolor{bibliography entry title}{fg=pggolddark}
+\setbeamercolor{bibliography entry location}{fg=pggreymid}
+\setbeamercolor{bibliography entry note}{fg=pgpurple}
+\setbeamercolor*{abstract title}{fg=pgpurple}
+\setbeamercolor*{abstract}{fg=pggreymid}
+%% surfaces: which block titles are dark
+\addtobeamertemplate{block begin}{\def\ams@emph@colour{.}\ams@darktrue\setbeamercolor{alerted text}{fg=pggreyline}}
+  {\def\ams@emph@colour{pgpurple}\ams@darkfalse\setbeamercolor{alerted text}{fg=pggolddark}}
+\addtobeamertemplate{block alerted begin}{\def\ams@emph@colour{.}\ams@darktrue\setbeamercolor{alerted text}{fg=pggreyline}}
+  {\def\ams@emph@colour{pgpurple}\ams@darkfalse\setbeamercolor{alerted text}{fg=pggolddark}}
+\addtobeamertemplate{block example begin}{\def\ams@emph@colour{.}\def\ams@quiet{pggreymid}}
+  {\def\ams@emph@colour{pgpurple}\def\ams@quiet{pggreyline}}
+\mode
+<all>
