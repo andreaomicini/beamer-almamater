@@ -143,6 +143,12 @@
   \usebeamercolor[fg]{bibliography entry location}\expandafter\url\expandafter{\ams@link@arg}}}
 \newcommand{\uuurl}[1]{{\ams@link@string\ams@link@arg{#1}%
   \textcolor{\ams@onsurface{\ams@quiet}{almaondark}}{\tiny\expandafter\url\expandafter{\ams@link@arg}}}}
+%% mail address: as \uurl, linked to mailto:, the address only
+\newcommand{\ams@mail}[1]{\href{mailto:#1}{\nolinkurl{#1}}}
+\newcommand{\umail}[1]{{\ams@link@string\ams@link@arg{#1}%
+  \textcolor{\ams@onsurface{almalink}{almaondark}}{\scriptsize\expandafter\ams@mail\expandafter{\ams@link@arg}}}}
+\newcommand{\uumail}[1]{{\ams@link@string\ams@link@arg{#1}%
+  \textcolor{\ams@onsurface{\ams@quiet}{almaondark}}{\tiny\expandafter\ams@mail\expandafter{\ams@link@arg}}}}
 %% DOI: likewise. https://doi.org is the current resolver; dx.doi.org is a
 %% deprecated alias, and the .bst reaches these through \dddoi, so this is the
 %% only place the resolver is named

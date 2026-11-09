@@ -118,6 +118,7 @@ Beyond the beamer furniture, the theme defines:
 | `\speaker` `\sspeaker` | marking the actual speaker among the authors, in the long and short forms, both in bold. Safe in `\author`: the name still reaches the PDF `/Author` field, only the markup is dropped |
 | `\ccite` | superscript citations; takes `\cite`'s optional note, as in `\ccite[p.~42]{key}`. `\cccite` is the same, kept for existing decks |
 | `\uurl` `\uuurl` | URLs, in two sizes; since 1.6.2 no character in the address needs escaping |
+| `\umail` `\uumail` | mail addresses, in two sizes, as `\uurl`/`\uuurl`: linked to `mailto:`, printing the address only; the title page's included (2026-11-10). Not in a title: they have no bookmark form yet |
 | `\wwwurl` | a web page's URL, as `@webpage` prints it: the colour of a journal's name, at the size around it; since 1.8.5 |
 | `\ddoi` `\dddoi` | DOIs, linked, in two sizes; since 1.6.2 no character in the DOI needs escaping |
 | `\apicepubpar` | the APICe marker; defined either way, but expands to nothing unless the `apice` option is given |
