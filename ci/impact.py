@@ -15,7 +15,9 @@ built when something it reads changed, and only then.
 - A repository's own .bib (a course before the shared file) is decided the same way, entry by entry.
 - .latexmkrc, .gitlab-ci.yml, .gitmodules: every deck. A deck with no deps/<deck>.files: built, whatever changed.
 - deps/ and bib/cites/ are what a build writes: changing them touches nothing.
-- With no usable <before-sha> (a new branch: zeros) the parent commit is the comparison.
+- With no <before-sha> (zeros: the repository's first push, or a pipeline run by hand; impact runs on main only):
+  every deck, since nothing of it has been built yet (ICCCI 2013, 2026-11-09: the parent commit as the comparison
+  built nothing on a new repository's first push). A <before-sha> not in the history: the parent commit.
 """
 import re
 import subprocess
@@ -102,6 +104,7 @@ def style_files(old_pin, new_pin):
 
 
 def touched(before):
+    if not before: return {d: 'first push or a pipeline run by hand: nothing built yet' for d in decks()}
     base = before if before and git('cat-file', '-e', before + '^{commit}') is not None else 'HEAD~1'
     names = git('diff', '--name-only', base, 'HEAD')
     if names is None: return {d: 'no history to compare with' for d in decks()}
