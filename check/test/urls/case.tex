@@ -1,0 +1,11 @@
+% urls.py's test: the lines marked BAD must be flagged, the others not
+\url{http://bad.example.org} % BAD; \url{http://in.a.comment}
+\begin{verbatim}
+\url{http://in.verbatim.org}
+\end{verbatim}
+\verb|\url{http://in.verb}|
+\texttt{bad@example.org} % BAD
+\href{mailto:bad@example.org}{write} % BAD
+\url{mailto:bad@example.org} % BAD
+\uurl{http://good.example.org} \uuurl{http://good.example.org} \umail{good@example.org} \uumail{good@example.org}
+\texttt{not-an-address} \href{http://good.example.org}{a link with its text}

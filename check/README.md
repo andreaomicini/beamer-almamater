@@ -8,6 +8,7 @@ not one per repository; see `../../COURSE-DECKS.md`). Run from the deck reposito
 | `checkdeck.py` | content silently dropped by `allowframebreaks` (a block too tall to split) | `../beamer-almamater/check/checkdeck.py tex/<deck>.tex aux/<deck>.pdf` |
 | `framebreaks.py` | `allowframebreaks` frames rendering a single page, a lone `I` in the title | `../beamer-almamater/check/framebreaks.py aux/<deck>.pdf` |
 | `vbwidth.py` | verbatim lines that really leave the text area in the built PDF: the long source lines are only the candidates, each looked up in the PDF; a line found fine is not checked again until it changes (`aux/<deck>.vbwidth`) | `../beamer-almamater/check/vbwidth.py tex/<deck>.tex aux/<deck>.pdf` |
+| `urls.py` | web and mail addresses not in the house form: a plain `\url`, a `\texttt` address, an `\href` to `mailto:` (web: `\uurl`/`\uuurl`; mail: `\umail`/`\uumail`, the title page's included; Andrea, 2026-11-10). Each hit shows its replacement; exit 1 if any. Run by the decks' CI job on the decks a push builds | `../beamer-almamater/check/urls.py tex/<deck>.tex` |
 
 `checkdeck.py` reads the source without its comments (verbatim kept as it is): a commented-out frame is not in
 the PDF, and was reported as missing (AS L1 16 times, L4, T1, SA T0) until 2026-11-02.

@@ -61,3 +61,19 @@ names:
         - .gitlab-ci.yml
   script:
     - bash check/test/names-test.sh
+
+# Checks the address check (check/urls.py, 2026-11-10) on every push to main that changes it: its case file's BAD lines
+# flagged, nothing else (check/test/urls-test.sh), so that a broken rule fails here before any deck's job runs it.
+urls:
+  image: python:3-alpine
+  rules:
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+      when: never
+    - changes:
+        - check/urls.py
+        - check/test/urls-test.sh
+        - check/test/urls/**/*
+        - .gitlab-ci.yml
+  script:
+    - apk add --no-cache bash >/dev/null
+    - bash check/test/urls-test.sh

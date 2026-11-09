@@ -17,6 +17,9 @@ built when something it reads changed, and only then.
 - A repository's own .bib (a course before the shared file) is decided the same way, entry by entry.
 - .latexmkrc, .gitlab-ci.yml, .gitmodules: every deck. A deck with no deps/<deck>.files: built, whatever changed.
 - deps/ and bib/cites/ are what a build writes: changing them touches nothing.
+- Each deck built is checked by ../check/urls.py (its .tex and the repository's own layers it reads): a deck whose web or
+  mail addresses are not in the house form gets a failing job urls:<deck> listing them (Andrea, 2026-11-10). The rule
+  binds a deck when it is built anyway, never all decks at once.
 - With no <before-sha> (zeros: the repository's first push, or a pipeline run by hand; impact runs on main only):
   every deck, since nothing of it has been built yet (ICCCI 2013, 2026-11-09: the parent commit as the comparison
   built nothing on a new repository's first push). A <before-sha> not in the history: the parent commit.
@@ -210,6 +213,19 @@ def touched(before):
     return out
 
 
+def urlcheck(d):
+    """the hits of ../check/urls.py on a deck's .tex and the repository's own layers it reads; '' if none"""
+    import os
+    urls = Path(__file__).resolve().parent.parent / 'check' / 'urls.py'
+    if not urls.exists(): return ''
+    deps = Path(f'deps/{d}.files')
+    files = [f'tex/{d}.tex'] + [f for f in (deps.read_text().split() if deps.exists() else [])
+                                 if f.endswith(('.sty', '.tex')) and not f.startswith('.style/')
+                                 and Path(f).is_file() and not Path(f).is_symlink() and f != f'tex/{d}.tex']
+    r = subprocess.run([sys.executable, str(urls), *files], capture_output=True, text=True)
+    return '' if r.returncode == 0 else r.stdout
+
+
 def deck_template():
     lines = Path('.gitlab-ci.yml').read_text().splitlines()
     i = lines.index('.deck:')
@@ -231,6 +247,12 @@ def main(argv):
         print('no-deck-touched:\n  image: alpine:latest\n  script:\n    - echo "no deck reads a changed file"')
     for d in sorted(t):
         print(f'{d}:\n  extends: .deck\n  variables:\n    DECK: {d}\n')
+        hits = urlcheck(d)
+        if hits:
+            lines = [l for l in hits.splitlines() if l.strip()]
+            print(f'urls:{d}:\n  image: alpine:latest\n  script:')
+            for l in lines: print('    - ' + __import__('json').dumps('echo ' + __import__('shlex').quote(l)))
+            print('    - exit 1\n')
 
 
 if __name__ == '__main__':
