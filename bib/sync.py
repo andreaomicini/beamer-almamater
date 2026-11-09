@@ -173,6 +173,9 @@ def integrity():
     for s, e, t, k in entries(a):
         x = field(a[s:e], 'crossref')
         if x and x.lower() not in keys: problems.append(f'{k}: crossref {x} missing')
+        for line in a[s:e].splitlines():                 # TeX reads % as a comment: a broken .bbl (2026-11-09, L7)
+            if re.search(r'(?<!\\)%', line) and not re.match(r'\s*abstract\s*=', line):
+                problems.append(f'{k}: an unescaped % ({line.strip()[:60]})')
     with tempfile.TemporaryDirectory() as d:
         for f in (APICE, POOL, os.path.join(ROOT, 'apalike-AMS.bst')):
             os.symlink(f, os.path.join(d, os.path.basename(f)))
