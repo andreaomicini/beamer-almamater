@@ -176,6 +176,10 @@ def integrity():
         for line in a[s:e].splitlines():                 # TeX reads % as a comment: a broken .bbl (2026-11-09, L7)
             if re.search(r'(?<!\\)%', line) and not re.match(r'\s*abstract\s*=', line):
                 problems.append(f'{k}: an unescaped % ({line.strip()[:60]})')
+            f = re.match(r'\s*(\w+)\s*=', line)
+            if f and f.group(1) not in ('abstract', 'keywords', 'acm', 'doi', 'apice', 'arxiv') and not f.group(1).startswith('url') \
+                    and re.search(r'(?<!\\)&', line):          # a bare & breaks a printed field (2026-11-09, IAG M1)
+                problems.append(f'{k}: an unescaped & in {f.group(1)}')
     with tempfile.TemporaryDirectory() as d:
         for f in (APICE, POOL, os.path.join(ROOT, 'apalike-AMS.bst')):
             os.symlink(f, os.path.join(d, os.path.basename(f)))
