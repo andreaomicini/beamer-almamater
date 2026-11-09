@@ -9,8 +9,10 @@ built when something it reads changed, and only then.
 
 - deps/<deck>.files lists every file of the repository the deck reads, links and their targets in .style alike
   (decks/records.pl writes it at each build). A deck is touched when a changed file is on its list.
-- A move of .style counts as the files changed between the two pins, as .style/<path>. Its bib/apice.bib is decided
-  entry by entry: the entries whose text changes, appears or goes, their crossref children, and the decks citing
+- A move of .style counts as the files changed between the two pins, as .style/<path>. A shared .sty that only adds
+  definitions (comments aside, every other line and every existing definition unchanged) counts only for the decks
+  using a new name, in their .tex or in a repository file they read (Andrea, 2026-11-10: \\umail must not rebuild
+  everything). Its bib/apice.bib is decided entry by entry: the entries whose text changes, appears or goes, their crossref children, and the decks citing
   them in bib/cites/<deck>.keys. Its pool.bib never counts: no deck reads it.
 - A repository's own .bib (a course before the shared file) is decided the same way, entry by entry.
 - .latexmkrc, .gitlab-ci.yml, .gitmodules: every deck. A deck with no deps/<deck>.files: built, whatever changed.
@@ -81,6 +83,61 @@ def citing(keys):
     return out
 
 
+DEF = re.compile(r'\\(?:(?:new|renew|provide)command\*?|DeclareRobustCommand\*?|(?:New|Renew|Provide|Declare)Document'
+                 r'(?:Command|Environment)|(?:new|renew)environment\*?|g?def)\s*\{?\s*\\?([A-Za-z@]+)\s*\}?')
+
+
+def definitions(text):
+    """(name -> its whole definition, normalised), and the rest of the text, normalised; comments out"""
+    text = '\n'.join(re.sub(r'(?<!\\)%.*', '', l) for l in text.split('\n'))
+    defs, rest, i = {}, [], 0
+    for m in DEF.finditer(text):
+        if m.start() < i: continue
+        j = m.end()
+        while True:                          # parameters, optional and mandatory arguments
+            k = j
+            while k < len(text) and text[k] in ' \t\n': k += 1
+            if k < len(text) and text[k] in '[{':
+                close, depth = {'[': ']', '{': '}'}[text[k]], 0
+                for e in range(k, len(text)):
+                    depth += {'{': 1, '[': 1, '}': -1, ']': -1}.get(text[e], 0)
+                    if depth == 0 and text[e] == close: break
+                j = e + 1
+            elif k < len(text) and text[k] == '#': j = k + 2
+            else: break
+        rest.append(text[i:m.start()]); defs.setdefault(m.group(1), '')
+        defs[m.group(1)] += ' '.join(text[m.start():j].split())
+        i = j
+    rest.append(text[i:])
+    return defs, ' '.join(''.join(rest).split())
+
+
+def additions(old, new):
+    """the names a .sty change only adds; None: the change does more (a redefinition, any other line)"""
+    (od, orest), (nd, nrest) = definitions(old), definitions(new)
+    if orest != nrest or any(nd.get(k) != v for k, v in od.items()): return None
+    return set(nd) - set(od)
+
+
+def using(names):
+    """the decks whose .tex, or a repository file they read, uses one of the names (a command, or an environment)"""
+    if not names: return set()
+    pat = re.compile(r'\\(?:' + '|'.join(map(re.escape, names)) + r')(?![A-Za-z@])|\\begin\{(?:'
+                     + '|'.join(map(re.escape, names)) + r')\}')
+    seen, out = {}, set()
+    def uses(f):
+        if f not in seen:
+            p = Path(f)
+            own = p.is_file() and not p.is_symlink() and not f.startswith('.style/')   # links lead into .style
+            seen[f] = bool(own and pat.search(p.read_text(errors='replace')))
+        return seen[f]
+    for d in decks():
+        deps = Path(f'deps/{d}.files')
+        read = [f'tex/{d}.tex'] + (deps.read_text().split() if deps.exists() else [])
+        if not deps.exists() or any(uses(f) for f in read): out.add(d)
+    return out
+
+
 def style_files(old_pin, new_pin):
     """the files changed between two pins of .style, as .style/<path>, and the two texts of bib/apice.bib"""
     url = git('config', '-f', '.gitmodules', 'submodule..style.url').strip()
@@ -89,18 +146,21 @@ def style_files(old_pin, new_pin):
         host, ns = os.environ.get('CI_SERVER_HOST'), os.environ.get('CI_PROJECT_NAMESPACE')
         tok = os.environ.get('CI_JOB_TOKEN')
         if host and tok: url = f'https://gitlab-ci-token:{tok}@{host}/{ns}/{url[3:]}'
-        else:                                  # on a desk: the sibling clone
-            url = str((Path.cwd() / url).resolve())
+        else:                                  # on a desk: the sibling clone, with or without .git
+            p = (Path.cwd() / url).resolve()
+            url = str(p if p.exists() else p.with_suffix(''))
     with tempfile.TemporaryDirectory() as d:
         if git('clone', '-q', '--filter=blob:none', '--no-checkout', url, d) is None:
-            return None, None, None
+            return None, None, None, None
         names = git('diff', '--name-only', old_pin, new_pin, cwd=d)
-        if names is None: return None, None, None
+        if names is None: return None, None, None, None
         files = {'.style/' + n for n in names.split()}
         bib = '.style/bib/apice.bib'
         old = git('show', f'{old_pin}:bib/apice.bib', cwd=d) if bib in files else None
         new = git('show', f'{new_pin}:bib/apice.bib', cwd=d) if bib in files else None
-        return files, old, new
+        sty = {f: (git('show', f'{old_pin}:{f[7:]}', cwd=d) or '', git('show', f'{new_pin}:{f[7:]}', cwd=d) or '')
+               for f in files if f.endswith('.sty')}
+        return files, old, new, sty
 
 
 def touched(before):
@@ -118,9 +178,14 @@ def touched(before):
     if '.style' in changed:
         old_pin = (git('ls-tree', base, '.style') or '').split()
         new_pin = (git('ls-tree', 'HEAD', '.style') or '').split()
-        files, old, new = style_files(old_pin[2], new_pin[2]) if len(old_pin) > 2 and len(new_pin) > 2 else (None, None, None)
+        files, old, new, sty = style_files(old_pin[2], new_pin[2]) if len(old_pin) > 2 and len(new_pin) > 2 else (None,) * 4
         if files is None:
             mark(decks(), '.style moved, its changes unreadable'); return out
+        for f, (a, b) in sty.items():
+            added = additions(a, b)
+            if added is None: continue
+            files.discard(f)
+            mark(using(added), f'{f} adds ' + ', '.join(sorted(added)))
         changed |= files
         if old is not None or new is not None:
             ch = changed_entries(old, new)
