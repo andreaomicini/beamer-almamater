@@ -180,6 +180,11 @@ def integrity():
             if f and f.group(1) not in ('abstract', 'keywords', 'acm', 'doi', 'apice', 'arxiv') and not f.group(1).startswith('url') \
                     and re.search(r'(?<!\\)&', line):          # a bare & breaks a printed field (2026-11-09, IAG M1)
                 problems.append(f'{k}: an unescaped & in {f.group(1)}')
+        for fld in ('author', 'editor'):                 # BibTeX cuts a first name's first byte: half a UTF-8 letter
+            for person in re.split(r'\s+and\s+', field(a[s:e], fld)):
+                first = person.split(',', 1)[1] if ',' in person else ' '.join(person.split()[:-1])
+                if any(w and ord(w[0]) > 127 for w in re.split(r'[\s~{}-]+', first)):
+                    problems.append(f'{k}: a non-ASCII initial in {fld} ({person.strip()}): write it as TeX, {{\\L}}ukasz')
     with tempfile.TemporaryDirectory() as d:
         for f in (APICE, POOL, os.path.join(ROOT, 'apalike-AMS.bst')):
             os.symlink(f, os.path.join(d, os.path.basename(f)))
