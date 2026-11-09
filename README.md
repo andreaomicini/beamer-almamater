@@ -83,7 +83,7 @@ every theme of the branch), the tags on the very commits the old repositories ha
 | --- | --- | --- |
 | `history/cesena` | `beamer-AMSCesena`'s `cesena` | `cesena-2006` … `cesena-2011` (CesenaSMA2006 … Cesena2011) |
 | `history/silverblue` | `beamer-AMSSilverBlue`'s `cesena` | `silverblue-cesena-1.0`, `silverblue-cesena-1.0-ciatto` (AMSCesenaBleu) |
-| `history/redgrey` | `beamer-AMSRedGrey`'s `cesena` | `redgrey-cesena-1.0` (AMSCesena 1.0) |
+| `history/redgrey` | `beamer-AMSRedGrey`'s `cesena` | `redgrey-cesena-1.0` (AMSCesena 1.0, as in CILC 2016), `redgrey-cesena-1.0-2013` (its earlier state, as in ICCCI 2013) |
 | `history/purpleandgold` | `beamer-AMSPurpleAndGold`'s `cesena` | `purpleandgold-cesena-1.1` (AMSCesenaPurpleAndGold) |
 | `history/bolognafc` | `beamer-AMSBolognaFC`'s `1.5` | `bolognafc-1.5.20230211-nodot` (AMSBolognaFC 1.5) |
 
