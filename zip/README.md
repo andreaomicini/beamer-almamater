@@ -15,8 +15,10 @@ From the deck's root, the one with `.latexmkrc`, `tex/` and `aux/`:
 ```
 
 It builds the deck with `latexmk`, then takes the list from the build itself: every project
-file in `aux/<deck>.fls`, plus the `.bib` and `.bst` named in `aux/<deck>.aux`, found by name
-anywhere in the repository. Symlinks are resolved, so the theme arrives as real files. In the
+file in `aux/<deck>.fls`, plus the `.bst` named in `aux/<deck>.aux`, found by name anywhere in the
+repository. The bibliography is the deck's own `<deck>.bib` (since 2026-11-09): from the `.bib` files the deck
+reads (`apice.bib`, shared by every deck), only the entries it cites, their crossref parents and
+the `@string`s they use; the flat copy says `\bibliography{<deck>}`. Symlinks are resolved, so the theme arrives as real files. In the
 copies, the `% !TEX` lines go, and a file called through a folder — `{img/x}` in any command,
 the deck's own macros included — is called by name. A name may hold spaces
 (`{img/tuttofuoco-between words}`, ISE 25·26's M0) and is taken literally: `{/*}` in a

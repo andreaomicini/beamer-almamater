@@ -1,0 +1,58 @@
+# impact -- a push builds only the decks it touches (Andrea, 2026-11-09).
+#
+# A deck repository's .gitlab-ci.yml holds the .deck job template and includes this file:
+#
+#   include:
+#     - project: andrea.omicini/beamer-almamater
+#       file: /ci/impact.gitlab-ci.yml
+#
+# impact runs ci/impact.py against the commit before the push: every deck whose deps/<deck>.files lists a changed
+# file (a move of .style counts as the files it changes), or whose bib/cites/<deck>.keys holds an entry changed in
+# bib/apice.bib; .latexmkrc, .gitlab-ci.yml and .gitmodules touch every deck. It writes a child pipeline with those
+# decks, each built by the repository's own .deck job; decks runs it. Both run only when a push changes something a
+# deck can read, so a push of documentation alone makes no pipeline. It replaces the one job per deck and bib-impact.
+
+.impact-changes: &impact-changes
+  - tex/**/*
+  - sty/**/*
+  - img/**/*
+  - code/**/*
+  - bib/**/*.bib
+  - bst/**/*
+  - .style
+  - .gitmodules
+  - .latexmkrc
+  - .gitlab-ci.yml
+
+impact:
+  stage: .pre
+  image: python:3-alpine
+  interruptible: true
+  variables:
+    GIT_DEPTH: "50"
+    GIT_SUBMODULE_STRATEGY: none
+  rules:
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+      when: never
+    - changes: *impact-changes
+  script:
+    - apk add --no-cache git >/dev/null
+    - git clone -q --depth 1 "https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/andrea.omicini/beamer-almamater.git" /tmp/hub
+    - python3 /tmp/hub/ci/impact.py "$CI_COMMIT_BEFORE_SHA" > decks.yml
+    - cat decks.yml
+  artifacts:
+    paths: [decks.yml]
+    expire_in: 1 week
+
+decks:
+  stage: test
+  needs: [impact]
+  rules:
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+      when: never
+    - changes: *impact-changes
+  trigger:
+    include:
+      - artifact: decks.yml
+        job: impact
+    strategy: depend

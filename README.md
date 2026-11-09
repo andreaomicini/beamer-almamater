@@ -101,10 +101,11 @@ repositories, frozen but readable.
 | `beamerfonttheme<name>.sty` | the two font themes |
 | `almabologna-background.pdf`, `almacesena-background.pdf` | the seals under the `bologna` and `cesena` options |
 | `apalike-AMS.bst` | the bibliography style, a renamed derivative of `apalike.bst` (see [the references frame](#the-references-frame) and the licence note below) |
-| `decks/` | `courses.sty` and `talks.sty`, the mechanisms every deck shares, and the recipes in its README |
+| `decks/` | `courses.sty` and `talks.sty`, the mechanisms every deck shares, `records.pl` (what each deck cites and reads), and the recipes in its README |
+| `bib/` | `apice.bib`, the one bibliography every deck reads, `pool.bib` the reserve, and `sync.py` to align entries with APICe by need (its README) |
 | `check/` | the shared deck checks and the canonical vocabulary `names.sty` |
 | `html/`, `zip/` | a deck as one HTML page, and as one flat folder |
-| `ci/` | the release, and the jobs deck repositories include: `style-lag`, `bib-impact` |
+| `ci/` | the release, and the jobs deck repositories include: `impact` (only the decks a push touches), `style-lag`; `bib-impact` until every repository has moved |
 <!-- markdownlint-enable MD013 -->
 
 Every release attaches a `style.zip` holding the `.sty`, `.bst` and background files and the `LICENSE`.

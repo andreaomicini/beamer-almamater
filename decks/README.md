@@ -14,6 +14,12 @@ style's own colour — and `\expandurl`, with the repository hosts `\aorepoprima
 `\aoreposecondary`; anything about one course (a lab repository, say) goes in that course's
 `sty/course.sty`. The names below hold for both.
 
+Beside them, `records.pl` (2026-11-09): called from the `END` block of every deck repository's `.latexmkrc`
+(`my $records = './.style/decks/records.pl'; do $records if -e $records;`), it writes after each build
+`bib/cites/<deck>.keys` (the keys the deck cites, from its `.aux`) and `deps/<deck>.files` (every file of the
+repository it reads, from its `.fls`: a link listed with its target in `.style/`), both tracked. The CI's
+`impact` job (`ci/impact.py`) reads them to build only the decks a push touches; see `bib/README.md`.
+
 ## writing a new deck
 
 ```latex

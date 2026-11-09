@@ -51,7 +51,54 @@ find_one() {
 	[ -n "$hits" ] || die "$1 not found in the repository"
 	for h in $hits; do put "$h"; done
 }
-for b in $(sed -n 's/^\\bibdata{\(.*\)}$/\1/p' "aux/$deck.aux" | tr , ' '); do find_one "$b.bib"; done
+## the deck's own <deck>.bib, never the shared one whole (Andrea, 2026-11-09): from the .bib files the deck reads, the
+## entries it cites, their crossref parents (to any depth) and the @strings they use; the flat copy reads {<deck>}
+bibs=$(sed -n 's/^\\bibdata{\(.*\)}$/\1/p' "aux/$deck.aux" | tr , ' ')
+if [ -n "$bibs" ]; then
+	srcs=()
+	for b in $bibs; do
+		h=$(find . \( -path ./aux -o -path ./pdf -o -path ./src -o -path ./zip -o -path ./.git \) -prune -o -name "$b.bib" -print | head -1)
+		[ -n "$h" ] || die "$b.bib not found in the repository"
+		srcs+=("$h")
+	done
+	python3 -I - "aux/$deck.aux" "$dir/$deck.bib" "${srcs[@]}" <<'PYEOF' || die "cannot write $deck.bib"
+import re, sys
+aux, out, srcs = sys.argv[1], sys.argv[2], sys.argv[3:]
+cites = {k.strip().lower() for c in re.findall(r'\\citation\{([^}]*)\}', open(aux).read()) for k in c.split(',')}
+entries, strings, order = {}, {}, []
+for f in srcs:
+    t = open(f, encoding='utf-8', errors='replace').read()
+    for m in re.finditer(r'^@(\w+)\s*\{', t, re.M):
+        i, d = m.end(), 1
+        while i < len(t) and d: d += {'{': 1, '}': -1}.get(t[i], 0); i += 1
+        kind, body = m.group(1).lower(), t[m.end():i - 1]
+        if kind == 'string':
+            strings.setdefault(body.split('=', 1)[0].strip().lower(), t[m.start():i])
+        elif kind not in ('preamble', 'comment'):
+            k = body.split(',', 1)[0].strip().lower()
+            if k not in entries: entries[k] = t[m.start():i]; order.append(k)
+want = set(order) if '*' in cites else cites & set(entries)
+grew = True
+while grew:
+    more = set()
+    for k in want:
+        x = re.search(r'^\s*crossref\s*=\s*[{"]([^}"]*)[}"]', entries[k], re.M | re.I)
+        if x and x.group(1).strip().lower() in entries: more.add(x.group(1).strip().lower())
+    grew = bool(more - want); want |= more
+missing = cites - set(entries) - {'*'}
+if missing: sys.exit('not in the .bib files: ' + ', '.join(sorted(missing)))
+text = '\n'.join(entries[k] for k in order if k in want)
+used, grew = set(), True
+while grew:
+    names = {n for n in strings if re.search(r'(?:=|#)\s*' + re.escape(n) + r'\s*(?=[,#}\n]|$)', text + '\n'.join(strings[u] for u in used), re.I)}
+    grew = bool(names - used); used |= names
+with open(out, 'w') as o:
+    for n in sorted(used): o.write(strings[n] + '\n')
+    if used: o.write('\n')
+    o.write('\n\n'.join(entries[k] for k in order if k in want) + '\n')
+PYEOF
+	perl -pi -e 'BEGIN { $d = shift } s#\\bibliography\{[^}]*\}#\\bibliography{$d}#g' "$deck" "$dir/$deck.tex"
+fi
 for s in $(sed -n 's/^\\bibstyle{\(.*\)}$/\1/p' "aux/$deck.aux"); do find_one "$s.bst"; done
 
 ## a file called through a folder is called by name, now that all sit side by side:
