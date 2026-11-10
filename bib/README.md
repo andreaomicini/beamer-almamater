@@ -25,7 +25,8 @@ file it reads) are written at each build by `decks/records.pl` and committed.
 ## The rules
 
 - **APICe gives the content**: an entry is its record's BibTeX (Publication, Talk, Thesis or, since 2026-11-10, Courseproject: a
-  completed project, entry type `@courseproject`), minus the abstract,
+  completed project, entry type `@courseproject`; since 2026-11-11 Coursedeck, `@coursedeck`, named `<Course>.<Label>`),
+  minus the abstract,
   with an `apice` field naming the record. Where a deck's text was better, APICe was corrected first (2026-11-09:
   capitals protected, compound surnames written `{Van Hentenryck}, Pascal`, missing cities and pages).
 - **The key is ours**: one entry per record, so one key per record. A record cited under several keys took the key

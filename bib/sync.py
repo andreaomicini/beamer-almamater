@@ -3,7 +3,8 @@
 
     python3 bib/sync.py check <key>...            those entries against their records
     python3 bib/sync.py pull <key>...             those entries rewritten from their records (our key kept)
-    python3 bib/sync.py add <Record> [<key>]      a record's BibTeX added under <key> (default: APICe's own)
+    python3 bib/sync.py add <Record> [<key>]      a record's BibTeX added under <key> (default: APICe's own);
+                                                  a course deck is <Course>.<Label>, e.g. Ds2324M2.L0b
     python3 bib/sync.py promote <key>             a pool.bib entry moved into apice.bib (from its record, if any)
     python3 bib/sync.py integrity                 the local checks only, no APICe
 
@@ -26,7 +27,8 @@ APICE, POOL = os.path.join(ROOT, 'bib', 'apice.bib'), os.path.join(ROOT, 'bib', 
 SPACES = {'Publication': ('~/APICe/publications/Publication.WebHome.xar', 'Publications.Class'),
           'Talk': ('~/APICe/talks/Talk.WebHome.xar', 'Talks.Class'),
           'Thesis': ('~/APICe/theses/Thesis.WebHome.xar', 'Theses.Class'),
-          'Courseproject': ('~/APICe/course projects/Courseproject.WebHome.xar', 'Courseprojects.Class')}   # since 2026-11-10
+          'Courseproject': ('~/APICe/course projects/Courseproject.WebHome.xar', 'Courseprojects.Class'),   # since 2026-11-10
+          'Coursedeck': ('~/APICe/courses/Coursedeck.WebHome.xar', 'Coursedecks.Class')}   # since 2026-11-11: <Course>.<Label>
 LIVE = '--all' not in sys.argv     # named keys: live; --all: the backups first
 
 
@@ -126,14 +128,15 @@ def record(rec):
     if not LIVE and not any(rec in v for v in stale().values()):
         for sp, (path, cls) in SPACES.items():
             z = _xar.setdefault(sp, zipfile.ZipFile(os.path.expanduser(path)))
-            try: s = z.read(f'{sp}/{rec}.xml').decode('utf-8', 'replace')
+            try: s = z.read(f'{sp}/{rec.replace(".", "/")}.xml').decode('utf-8', 'replace')   # a deck is nested
             except KeyError: continue
             o = s.split('<object>')[1] if '<object>' in s else s
             b = re.search(r'<bibtex>([^<]*)</bibtex>', o); st = re.search(r'<status>([^<]*)</status>', o)
             return sp, html.unescape(b.group(1)) if b else '', st.group(1) if st else ''
     c = cookie()
     for sp, (_, cls) in SPACES.items():
-        u = f'https://apice.unibo.it/rest/wikis/xwiki/spaces/{sp}/pages/{rec}/objects/{cls}/0'
+        *sub, page = rec.split('.')        # a deck is nested: Coursedeck.<Course>.<Label>
+        u = f'https://apice.unibo.it/rest/wikis/xwiki/spaces/{sp}/' + ''.join(f'spaces/{x}/' for x in sub) + f'pages/{page}/objects/{cls}/0'
         r = subprocess.run(['curl', '-s', '-m', '30', '-H', 'Cookie: ' + c, '-H', 'Accept: application/json', u],
                            capture_output=True, text=True).stdout
         try: p = {x['name']: x.get('value') or '' for x in json.loads(r)['properties']}
@@ -166,7 +169,7 @@ def from_record(rec, key):
     if not m: sys.exit(f'sync: {sp}.{rec} carries no BibTeX')
     body = '\n' + drop_field(m.group(2), 'abstract').lstrip('\n')   # the first field on its own line
     body = unprintable(m.group(1).lower(), body)
-    if not field(body, 'apice'): body = insert_field(body, 'apice', '{%s}' % rec)   # in its alphabetical slot
+    if not field(body, 'apice'): body = insert_field(body, 'apice', '{%s}' % rec.replace('.', '/'))   # in its alphabetical slot
     return f'@{m.group(1).lower()}{{{key},' + body.rstrip() + '\n}'
 
 

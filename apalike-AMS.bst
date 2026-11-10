@@ -1009,6 +1009,46 @@ FUNCTION {courseproject}                                % AMS: a student
   fin.entry
 }
 
+FUNCTION {format.ams.deck}                              % AMS: a course
+{ "\newblock" *                                         % deck links its
+  apice empty$                                          % own APICe page
+    {}                                                  % (2026-11-11)
+    { "\apicedeckpar{" * apice * "}  " * "" output }
+  if$
+  doi empty$
+  { url empty$
+    {}
+    { format.url output }
+    if$
+  }
+  { format.doi output }
+  if$
+}
+
+FUNCTION {coursedeck}                                   % AMS: a slide
+{ output.bibitem                                        % deck of a
+  format.authors "author" output.check                  % course, from
+  author format.key output                              % APICe's
+  output.year.check                                     % Coursedecks
+  new.block
+  format.title "title" output.check
+  new.block
+  type empty$
+    { number output }
+    { number empty$
+        { type output }
+        { type " " * number * output }
+      if$
+    }
+  if$
+  howpublished output
+  new.block
+  note output
+  new.block
+  format.ams.deck
+  fin.entry
+}
+
 % webpage: a web page, also as @online, @www, @electronic. Every field may be
 % missing but a link: who (author, else organization) and year first when
 % there, else the title, kept as written; the URL in red on its own line;
