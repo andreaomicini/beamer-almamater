@@ -37,6 +37,12 @@ file it reads) are written at each build by `decks/records.pl` and committed.
   editor beside an author in a `@book`/`@inbook`, `_number` for a number beside a volume in a book or proceedings
   paper. BibTeX ignores it, so the page is what it was and the warning goes; the record keeps the field. `sync.py`
   applies it whenever it writes an entry (`unprintable()`), and compares with it.
+- **What the `.bst` must not lowercase is braced in the title** (Andrea, 2026-11-10), on the record first: a word with
+  a capital after its first letter whole (`{BDI}`, `{tuProlog}`, `{E'GV}`, `{4.3BSD}`, `{SWARM-BOTS}`), a single
+  capital but the article A (`{I}, {R}obot`), a name on its first letter, as the house writes it (`{S}tanford`,
+  `{A}urora`, `{P}rolog`), the capitals of a title not in English as its language has them. Ordinary words joined
+  in camel case are no name (MultiAgent). `sync.py integrity` fails on the capitals; the names, which look like
+  ordinary words, are read by a person. Uniform rendering is the point: never stop the `.bst` lowercasing instead.
 
 ## Alignment: by need, entry by entry
 

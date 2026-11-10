@@ -175,6 +175,40 @@ def record_live(rec):
     finally: LIVE = saved
 
 
+# ---------- capitals in titles (Andrea, 2026-11-10): apalike-AMS lowercases a title; what must stay is braced
+ORDINARY = {'MultiAgent'}      # ordinary words joined in camel case: no name
+_PART = re.compile(r"[A-Za-z0-9](?:[A-Za-z0-9'’&]|\.(?=[A-Za-z0-9]))*(?:(?<=[A-Z])\.(?=[\s,:;)]|$))?|[A-Z]")
+
+
+def _caps(w):
+    """a capital BibTeX would lose: one after the word's first letter (tuProlog, BDI), or a single capital but A (I, G)"""
+    return w not in ORDINARY and (any(c.isupper() for c in w[1:]) or (len(w) == 1 and w.isupper() and w != 'A'))
+
+
+def unbraced(title):
+    """the words of a title whose capitals BibTeX would lower, outside braces: a word whole (E'GV, 4.3BSD, A.I.), a
+    hyphenated name whole when every part starts with a capital (SWARM-BOTS, Hearsay-II). A name in one capital
+    (Stanford, Aurora) cannot be told from an ordinary word: it is braced by hand, {S}tanford."""
+    out, d, i = [], 0, 0
+    while i < len(title):
+        c = title[i]
+        if c == '\\': i += 2; continue
+        if c in '{}': d += 1 if c == '{' else -1; i += 1; continue
+        if d == 0 and (i == 0 or title[i - 1] in ' ([/"`\''):
+            m = re.match(r"[^\s{}/,;:()]+", title[i:])
+            if m:
+                word = m.group(0).rstrip(',;:!?')
+                if not ('.' in word.rstrip('.') and re.search(r'[A-Z]\.$', word)): word = word.rstrip('.')
+                parts = [p.group(0) for p in _PART.finditer(word)]
+                if '-' in word and all(p[0].isupper() or p[0].isdigit() for p in parts) and any(map(_caps, parts)):
+                    out.append(word)
+                else:
+                    out += [p for p in parts if _caps(p)]
+                i += max(len(m.group(0)), 1); continue
+        i += 1
+    return out
+
+
 # ---------- integrity
 def integrity():
     a, p = open(APICE).read(), open(POOL).read()
@@ -193,6 +227,9 @@ def integrity():
             if f and f.group(1) not in ('abstract', 'keywords', 'acm', 'doi', 'apice', 'arxiv') and not f.group(1).startswith('url') \
                     and re.search(r'(?<!\\)&', line):          # a bare & breaks a printed field (2026-11-09, IAG M1)
                 problems.append(f'{k}: an unescaped & in {f.group(1)}')
+        t = re.search(r'^\s*title\s*=\s*\{(.*)\},?\s*$', a[s:e], re.M | re.I)   # the value, one outer pair off
+        u = unbraced(t.group(1)) if t else []
+        if u: problems.append(f'{k}: title capitals not braced: {", ".join(u)} (write {{{u[0]}}})')
         for fld in ('author', 'editor'):                 # BibTeX cuts a first name's first byte: half a UTF-8 letter
             for person in re.split(r'\s+and\s+', field(a[s:e], fld)):
                 first = person.split(',', 1)[1] if ',' in person else ' '.join(person.split()[:-1])
