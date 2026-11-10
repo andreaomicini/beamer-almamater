@@ -141,6 +141,18 @@ def record(rec):
     return None, '', ''
 
 
+def unprintable(kind, body):
+    """a field the .bst cannot print beside another, kept with a leading underscore (BibTeX ignores it, nothing is
+    lost, the record keeps it): an editor beside an author in a book; a number beside a volume (Andrea, 2026-11-10)"""
+    for kinds, has, f in ((('book', 'inbook'), 'author', 'editor'),
+                          (('book', 'inbook', 'incollection', 'inproceedings'), 'volume', 'number')):
+        if kind in kinds and field(body, has) and field(body, f):
+            v = re.search(r'^\s*%s\s*=\s*(.*?),?\s*$' % f, body, re.M | re.I)
+            raw = v.group(1) if v else '{%s}' % field(body, f)
+            body = insert_field(drop_field(body, f), '_' + f, raw)
+    return body
+
+
 def from_record(rec, key):
     """the record's BibTeX as an apice.bib entry: our key, no abstract, an apice field"""
     sp, b, st = record(rec)
@@ -151,6 +163,7 @@ def from_record(rec, key):
     m = re.match(r'\s*@(\w+)\s*\{\s*[^,\s]*\s*,(.*)\}\s*$', b, re.S)
     if not m: sys.exit(f'sync: {sp}.{rec} carries no BibTeX')
     body = '\n' + drop_field(m.group(2), 'abstract').lstrip('\n')   # the first field on its own line
+    body = unprintable(m.group(1).lower(), body)
     if not field(body, 'apice'): body = insert_field(body, 'apice', '{%s}' % rec)   # in its alphabetical slot
     return f'@{m.group(1).lower()}{{{key},' + body.rstrip() + '\n}'
 

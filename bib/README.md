@@ -33,6 +33,10 @@ file it reads) are written at each build by `decks/records.pl` and committed.
 - **Web resources are `@webpage`**: title and URL at least; an organisation as author when there is none. They have
   no record, and are the noted exceptions to the rule above.
 - **No `@string` and no `@` outside entries** in `apice.bib`.
+- **A field the `.bst` cannot print beside another keeps a leading underscore** (Andrea, 2026-11-10): `_editor` for an
+  editor beside an author in a `@book`/`@inbook`, `_number` for a number beside a volume in a book or proceedings
+  paper. BibTeX ignores it, so the page is what it was and the warning goes; the record keeps the field. `sync.py`
+  applies it whenever it writes an entry (`unprintable()`), and compares with it.
 
 ## Alignment: by need, entry by entry
 
