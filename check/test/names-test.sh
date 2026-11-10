@@ -9,6 +9,10 @@ w=$(mktemp -d); trap 'rm -rf "$w"' EXIT
 cp ../names.sty "$w/names.sty"
 names=$(sed -n 's/^\\newcommand{\\\([A-Za-z@]*\)}.*/\1/p' ../names.sty)
 acros=$(sed -n 's/^\\DeclareAcronym{\([^}]*\)}.*/\1/p' ../names.sty)
+# A name in capitals is written in capitals, never in \textsc{…} (Andrea, 2026-11-10): an argument of \textsc with no
+# lowercase letter, commands aside, fails here.
+caps=$(perl -ne 'next if /^\s*%/; s/(?<!\\)%.*//; while (/\\textsc(\{((?:[^{}]++|(?1))*)\})/g) { my $a = $2; $a =~ s/\\[A-Za-z]+//g; print "$.: \\textsc$1\n" unless $a =~ /[a-z]/ }' ../names.sty)
+if [ -n "$caps" ]; then echo "$caps"; echo 'names-test: \textsc on capitals only (write them as capitals)'; exit 1; fi
 for class in article scrartcl; do
   {
     printf '%s\n' "\\documentclass{$class}" '\providecommand{\texorpdfstring}[2]{#1}' \
