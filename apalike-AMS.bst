@@ -974,6 +974,41 @@ FUNCTION {talk}
   fin.entry
 }
 
+FUNCTION {format.ams.project}                           % AMS: a course
+{ "\newblock" *                                         % project links its
+  apice empty$                                          % own APICe page
+    {}                                                  % (2026-11-10)
+    { "\apiceprojpar{" * apice * "}  " * "" output }
+  if$
+  doi empty$
+  { url empty$
+    {}
+    { format.url output }
+    if$
+  }
+  { format.doi output }
+  if$
+}
+
+FUNCTION {courseproject}                                % AMS: a student
+{ output.bibitem                                        % project of a
+  format.authors "author" output.check                  % course, from
+  author format.key output                              % APICe's
+  output.year.check                                     % Courseprojects
+  new.block
+  format.title "title" output.check
+  new.block
+  type output
+  howpublished output
+  new.block
+  format.supervision output
+  new.block
+  note output
+  new.block
+  format.ams.project
+  fin.entry
+}
+
 % webpage: a web page, also as @online, @www, @electronic. Every field may be
 % missing but a link: who (author, else organization) and year first when
 % there, else the title, kept as written; the URL in red on its own line;

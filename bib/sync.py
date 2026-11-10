@@ -25,7 +25,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 APICE, POOL = os.path.join(ROOT, 'bib', 'apice.bib'), os.path.join(ROOT, 'bib', 'pool.bib')
 SPACES = {'Publication': ('~/APICe/publications/Publication.WebHome.xar', 'Publications.Class'),
           'Talk': ('~/APICe/talks/Talk.WebHome.xar', 'Talks.Class'),
-          'Thesis': ('~/APICe/theses/Thesis.WebHome.xar', 'Theses.Class')}
+          'Thesis': ('~/APICe/theses/Thesis.WebHome.xar', 'Theses.Class'),
+          'Courseproject': ('~/APICe/course projects/Courseproject.WebHome.xar', 'Courseprojects.Class')}   # since 2026-11-10
 LIVE = '--all' not in sys.argv     # named keys: live; --all: the backups first
 
 
@@ -160,6 +161,7 @@ def from_record(rec, key):
         sp, b, st = record_live(rec)      # newer than the backups
     if sp is None: sys.exit(f'sync: no record {rec} on APICe')
     if sp == 'Publication' and st != 'published': sys.exit(f'sync: {rec} has status {st!r}: only published records')
+    if sp == 'Courseproject' and st != 'completed': sys.exit(f'sync: {rec} has status {st!r}: only completed projects')
     m = re.match(r'\s*@(\w+)\s*\{\s*[^,\s]*\s*,(.*)\}\s*$', b, re.S)
     if not m: sys.exit(f'sync: {sp}.{rec} carries no BibTeX')
     body = '\n' + drop_field(m.group(2), 'abstract').lstrip('\n')   # the first field on its own line

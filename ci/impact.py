@@ -122,6 +122,30 @@ def additions(old, new):
     return set(nd) - set(od)
 
 
+BSTCMD = re.compile(r'^(FUNCTION|MACRO|ENTRY|INTEGERS|STRINGS|READ|EXECUTE|ITERATE|REVERSE|SORT)\b', re.M)
+
+
+def bst_blocks(text):
+    """the .bst as [(command, name, its whole text normalised)], comments out: a FUNCTION is named by its first argument"""
+    text = '\n'.join(re.sub(r'(?<!\\)%.*', '', l) for l in text.split('\n'))
+    starts = [m.start() for m in BSTCMD.finditer(text)] + [len(text)]
+    out = []
+    for a, b in zip(starts, starts[1:]):
+        block = text[a:b]; cmd = block.split(None, 1)[0]
+        m = re.match(r'\w+\s*\{\s*([^}\s]*)\s*\}', block)
+        out.append((cmd, m.group(1) if m and cmd in ('FUNCTION', 'MACRO') else '', ' '.join(block.split())))
+    return out
+
+
+def bst_additions(old, new):
+    """the FUNCTIONs a .bst change only adds; None: the change does more. Taking the new FUNCTIONs out of the new text
+    must give back the old one, block for block: then every entry type that existed prints as before (2026-11-10)"""
+    o, n = bst_blocks(old), bst_blocks(new)
+    known = {(c, k) for c, k, _ in o}
+    added = {k for c, k, _ in n if c == 'FUNCTION' and (c, k) not in known}
+    return added if [b for b in n if not (b[0] == 'FUNCTION' and b[1] in added)] == o else None
+
+
 def using(names):
     """the decks whose .tex, or a repository file they read, uses one of the names (a command, or an environment)"""
     if not names: return set()
@@ -162,7 +186,7 @@ def style_files(old_pin, new_pin):
         old = git('show', f'{old_pin}:bib/apice.bib', cwd=d) if bib in files else None
         new = git('show', f'{new_pin}:bib/apice.bib', cwd=d) if bib in files else None
         sty = {f: (git('show', f'{old_pin}:{f[7:]}', cwd=d) or '', git('show', f'{new_pin}:{f[7:]}', cwd=d) or '')
-               for f in files if f.endswith('.sty')}
+               for f in files if f.endswith(('.sty', '.bst'))}
         return files, old, new, sty
 
 
@@ -185,6 +209,9 @@ def touched(before):
         if files is None:
             mark(decks(), '.style moved, its changes unreadable'); return out
         for f, (a, b) in sty.items():
+            if f.endswith('.bst'):              # new entry types only: no deck prints otherwise; the decks citing an
+                if bst_additions(a, b) is not None: files.discard(f)   # entry of a new type are marked by apice.bib
+                continue
             added = additions(a, b)
             if added is None: continue
             files.discard(f)
