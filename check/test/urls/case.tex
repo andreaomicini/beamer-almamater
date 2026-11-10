@@ -6,6 +6,7 @@
 \verb|\url{http://in.verb}|
 \texttt{bad@example.org} % BAD
 \href{mailto:bad@example.org}{write} % BAD
+\newcommand{\mailbad}[1]{\href{mailto:#1}{\texttt{#1}}} % BAD
 \url{mailto:bad@example.org} % BAD
 \uurl{http://good.example.org} \uuurl{http://good.example.org} \umail{good@example.org} \uumail{good@example.org}
 \texttt{not-an-address} \href{http://good.example.org}{a link with its text}
