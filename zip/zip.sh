@@ -103,11 +103,13 @@ for s in $(sed -n 's/^\\bibstyle{\(.*\)}$/\1/p' "aux/$deck.aux"); do find_one "$
 
 ## a file called through a folder is called by name, now that all sit side by side:
 ## {img/x} becomes {x} wherever x, with or without its extension, is one of the files here (x may hold spaces);
-## never inside a web address ({https://…/l2-jason} kept, though l2-jason.tex is here: AS 20·21 L2, L3, T4);
+## never inside a web address ({https://…/l2-jason} kept, though l2-jason.tex is here: AS 20·21 L2, L3, T4),
+## nor one written without its scheme ({hub.docker.com/r/bitnami/etcd} kept, though etcd.png is here: DS 23·24 L7),
+## nor a command line, whose folder part holds a space ({> docker pull bitnami/etcd}, the same slide);
 ## inside a macro, {img/#1} becomes {#1} wherever img/ is a folder of the repository (the check below proves it)
 for f in "$dir"/*.tex "$dir"/*.sty; do
 	[ -e "$f" ] || continue
-	perl -pi -e 'BEGIN { $d = shift } s{\{(?![^{}]*://)[^{}%#\\]*/([^{}/%#\\]+)\}}{ (-e "$d/$1" || (() = glob("\Q$d/$1\E.*"))) ? "{$1}" : $& }ge' "$dir" "$f"
+	perl -pi -e 'BEGIN { $d = shift } s{\{(?![^{}]*://)(?![\w-]+(?:\.[\w-]+)+/)(?![^{}/]*\s[^{}]*/)[^{}%#\\]*/([^{}/%#\\]+)\}}{ (-e "$d/$1" || (() = glob("\Q$d/$1\E.*"))) ? "{$1}" : $& }ge' "$dir" "$f"
 	perl -pi -e 's{\{([^{}%#\\]+)/(#[1-9][^{}/%\\]*)\}}{ -d $1 ? "{$2}" : $& }ge' "$f"
 done
 
