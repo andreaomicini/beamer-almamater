@@ -9,12 +9,16 @@
 
 ## this branch
 
-AMSBolognaFC 1.5 as it was installed in `~/Library/texmf` and used by the
-*Distributed Systems* decks of 2023 to 2025: the theme of the time, kept so that
+AMSBolognaFC as it was installed in `~/Library/texmf` and used by the
+*Distributed Systems* decks of 2022 to 2025: the theme of the time, kept so that
 those decks rebuild as they were, pinned through their `.style` submodule. It is
 not `main` and never merges into it.
 
-## Two tags, two states of 1.5
+## Three tags, the states of 1.3 and 1.5
+
+* `bolognafc-1.3.20220217` — the style of 17 February 2022 (`ad2d547`,
+  *change version*). Pinned by every stage of `sd2223-slides` (SD 2022/2023),
+  whose 2022 `.bbl` and Virtuale PDFs prove it.
 
 * `bolognafc-1.5.20230211` — the style of 11 February 2023 (`5a6d5f9`, *apice
   option added*), its `apalike-AMS.bst` ending every entry with a period. Pinned
