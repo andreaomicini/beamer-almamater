@@ -14,10 +14,14 @@ await p.goto('$url#1'); await p.waitForTimeout(800);
 for (let i = 1; i <= $n; i++) { await p.evaluate(k => { location.hash = '#' + k; }, i); await p.waitForTimeout(200); await p.screenshot({ path: '$C/wk-' + String(i).padStart(${#n}, '0') + '.png' }); }
 await b.close();
 JS
-timeout 900 node $C/shot.mjs
+PWI=/opt/homebrew/opt/playwright-cli/libexec/lib/node_modules/@playwright/cli/node_modules/playwright-core/cli.js
+timeout 900 node $C/shot.mjs 2>$C/wk.err || {
+  grep -q "Executable doesn't exist" $C/wk.err && { echo "compare.zsh: WebKit missing for this playwright-cli (after a brew upgrade): node $PWI install webkit" >&2; exit 1 }
+  echo "compare.zsh: WebKit failed, see $C/wk.err" >&2; exit 1 }
 # a private profile: an open Firefox holds the usual one, and a headless run on it makes no picture
 [ -n "$SKIPFF" ] || { P=$(mktemp -d); for i in $(seq 1 $n); do j=$(printf "%0${#n}d" $i); timeout 60 /Applications/Firefox.app/Contents/MacOS/firefox --headless -no-remote -profile $P --window-size=$w,$h --screenshot "$PWD/$C/ff-$j.png" "$url#$i" >/dev/null 2>&1; done; rm -rf $P; }
 engines=(wk); [ -z "$SKIPFF" ] && engines+=(ff)
+for e in $engines; do k=$(ls $C/$e-*.png 2>/dev/null | wc -l); (( k == n )) || { echo "compare.zsh: $e drew $k of $n pages" >&2; exit 1 }; done
 for e in $engines; do
   for i in $(seq 1 $n); do j=$(printf "%0${#n}d" $i); r=$(ls $C/ref-*$j.png | head -1); printf "%s %s\n" $j "$(compare -metric AE -fuzz 12% $r $C/$e-$j.png null: 2>&1 | sed 's/.*(\(.*\))/\1/')"; done > $C/$e.txt
   echo "$e: worst $(LC_ALL=C sort -k2 -g $C/$e.txt | tail -3 | tr '\n' ' ')"

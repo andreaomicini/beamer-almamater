@@ -41,7 +41,10 @@ made into its page, failing on an error or on a `.pdf` left in the working copy.
 
 Needs: TeX Live (`latex`, `bibtex`, `dvisvgm`, `dv2dt`, `dt2dv`), and from Homebrew `poppler`
 (`pdftocairo`, `pdfinfo`, `pdftoppm`), `ghostscript`, `imagemagick`, `fonttools` (its own interpreter, which
-has brotli for WOFF2); for `--compare` also `playwright-cli` with WebKit, and Firefox.
+has brotli for WOFF2); for `--compare` also `playwright-cli` with WebKit, and Firefox. A `brew upgrade` of `playwright-cli`
+can want a newer WebKit than the one downloaded: `--compare` then stops and prints the command that fetches it
+(`playwright-core/cli.js install webkit`, from the formula's own `node_modules`), and stops too when an engine
+draws fewer pages than the PDF has (2026-11-12).
 
 ## The page
 
