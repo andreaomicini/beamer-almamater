@@ -17,7 +17,7 @@
 %% name and version -- Major.Minor[.Patch]; the release time-stamp is appended by the CI
 \newcommand{\stylename}{almamater}
 \newcommand{\stylemajor}{2}
-\newcommand{\styleminor}{0}
+\newcommand{\styleminor}{1}
 %% \stylepatch is optional: comment the next line out to release as Major.Minor
 \newcommand{\stylepatch}{0}
 \ifdefined\stylepatch
@@ -46,15 +46,18 @@
 \newif\if@doApice
 \@doApicefalse
 \DeclareOption{apice}{\@doApicetrue}
-%% which seal watermarks the slides -- none unless asked for: bologna (the Ateneo)
-%% or cesena (the Campus). The seals belong to the Alma Mater, so a deck claims
+%% which seal watermarks the slides -- none unless asked for: bologna (the Ateneo),
+%% cesena (the Campus) or bbs (Bologna Business School). The seals belong to the Alma Mater, so a deck claims
 %% one explicitly; whoever is outside the Alma Mater just leaves the option out
 \newif\if@doSeal
 \@doSealfalse
 \newif\if@doCesena
 \@doCesenafalse
-\DeclareOption{bologna}{\@doSealtrue\@doCesenafalse}
-\DeclareOption{cesena}{\@doSealtrue\@doCesenatrue}
+\newif\if@doBbs
+\@doBbsfalse
+\DeclareOption{bologna}{\@doSealtrue\@doCesenafalse\@doBbsfalse}
+\DeclareOption{cesena}{\@doSealtrue\@doCesenatrue\@doBbsfalse}
+\DeclareOption{bbs}{\@doSealtrue\@doCesenafalse\@doBbstrue}
 \ProcessOptions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \mode<presentation>
@@ -84,16 +87,18 @@
 %
 \useoutertheme{infolines}
 \useinnertheme[shadow=true]{rounded}
-%% background -- plain by default; with bologna or cesena, a seal in grey cropped
-%% at the lower-right corner: the Ateneo with the former, the Campus di Cesena
-%% with the latter. Cesena's ring is solid where the Ateneo's is an outline, so
-%% it is set lighter to weigh the same
+%% background -- plain by default; with bologna, cesena or bbs, a seal in grey cropped
+%% at the lower-right corner: the Ateneo, the Campus di Cesena, Bologna Business School.
+%% Cesena's and BBS's rings are solid where the Ateneo's is an outline, so they are set
+%% lighter to weigh the same
 \if@doSeal
-  \if@doCesena
+  \if@doBbs
+    \pgfdeclareimage[height=.97\paperheight]{bg}{almabbs-background}
+  \else\if@doCesena
     \pgfdeclareimage[height=.97\paperheight]{bg}{almacesena-background}
   \else
     \pgfdeclareimage[height=.97\paperheight]{bg}{almabologna-background}
-  \fi
+  \fi\fi
   \setbeamertemplate{background}{\pgfuseimage{bg}}
 \fi
 %% text

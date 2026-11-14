@@ -39,7 +39,7 @@ becomes a named preset here first, so that the template's CI builds and checks i
 
 The class options are those of every preset: `apice` enables the APICe BibTeX field;
 **no option, no watermark** — `bologna` watermarks the slides with the Ateneo seal, `cesena` with the
-Campus di Cesena seal:
+Campus di Cesena seal, `bbs` with the seal of Bologna Business School (from APICe's `Logo.BBS`):
 
 ```latex
 \documentclass[presentation,apice,cesena]{beamer}\mode<presentation>{\usetheme{AMSBolognaFC}}
@@ -95,7 +95,7 @@ repositories, frozen but readable.
 <!-- markdownlint-disable MD013 -->
 | file | what it is |
 | --- | --- |
-| `beamerthemealmamater.sty` | the theme: the `apice` and `bologna`/`cesena` options, the beamer templates, the commands below, the workarounds, name and version |
+| `beamerthemealmamater.sty` | the theme: the `apice` and `bologna`/`cesena`/`bbs` options, the beamer templates, the commands below, the workarounds, name and version |
 | `beamertheme<Preset>.sty` | the six presets, three lines each |
 | `beamercolortheme<name>.sty` | the six colour themes: palette, element colours, dark surfaces, roles |
 | `beamerfonttheme<name>.sty` | the two font themes |
