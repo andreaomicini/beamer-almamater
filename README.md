@@ -14,7 +14,12 @@ AMSBolognaFC as it was installed in `~/Library/texmf` and used by the
 those decks rebuild as they were, pinned through their `.style` submodule. It is
 not `main` and never merges into it.
 
-## Three tags, the states of 1.3 and 1.5
+## Four tags, the states of 2021, 1.3 and 1.5
+
+* `bolognafc-20210830` — the style of 30 August 2021 (`d258a40`, *New speaker
+  commands*), before any version number; its theme files stayed the same until
+  January 2022. Pinned by every stage of `sd2122-slides` (SD 2021/2022), whose
+  2021 `.bbl` and Virtuale PDFs prove it.
 
 * `bolognafc-1.3.20220217` — the style of 17 February 2022 (`ad2d547`,
   *change version*). Pinned by every stage of `sd2223-slides` (SD 2022/2023),
