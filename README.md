@@ -21,3 +21,7 @@ The Bologna Business School variant, version 1.1 (April 2020), as installed in
 Source: `Archivio/Documenti/prodotti/beamer/AMSBBSPurpleAndGold/1.1/` in iCloud
 Drive, recovered on 2026-11-14. Its seal loads as `img/almabbs-background`, so a
 consumer links `img/almabbs-background.pdf` to `.style/almabbs-background.pdf`.
+
+Version 1.0 (January 2020), the one the FoIoT 2019/2020 decks were built on, is
+tagged `purpleandgold-bbs-1.0` (`foiot1920-slides`); it was committed after 1.1,
+which stays at the tip.
