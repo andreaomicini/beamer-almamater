@@ -17,7 +17,7 @@ the time was LaTeX's own `apalike`, not `apalike-AMS`.
 
 The Bologna Business School variant, version 1.1 (April 2020), as installed in
 `~/Library/texmf` at the time, tag `purpleandgold-bbs-1.1`. Used by the FoIoT
-2020/2021 decks (`fiot2021-slides`, Master in Digital Technology Management).
+2020/2021 decks (`foiot2021-slides`, Master in Digital Technology Management).
 Source: `Archivio/Documenti/prodotti/beamer/AMSBBSPurpleAndGold/1.1/` in iCloud
 Drive, recovered on 2026-11-14. Its seal loads as `img/almabbs-background`, so a
 consumer links `img/almabbs-background.pdf` to `.style/almabbs-background.pdf`.
