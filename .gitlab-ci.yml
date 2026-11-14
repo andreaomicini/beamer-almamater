@@ -80,6 +80,8 @@ urls:
 
 # Checks impact.py's .bst rule (2026-11-10) on every push to main that changes it: a .bst change that only adds FUNCTIONs
 # (an entry type, as @courseproject) rebuilds no deck, any other change does (ci/test/impact-bst-test.py).
+# Since 2026-11-14 also its .sty rules: version lines alone are no change, a new class option counts only for the decks
+# naming it (ci/test/impact-option-test.py).
 impact-test:
   image: python:3-alpine
   rules:
@@ -91,3 +93,4 @@ impact-test:
         - .gitlab-ci.yml
   script:
     - python3 ci/test/impact-bst-test.py
+    - python3 ci/test/impact-option-test.py

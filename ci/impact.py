@@ -12,7 +12,9 @@ built when something it reads changed, and only then.
 - A move of .style counts as the files changed between the two pins, as .style/<path>. A shared .sty that only adds
   definitions (comments aside, every other line and every existing definition unchanged) counts only for the decks
   using a new name, in their .tex or in a repository file they read (Andrea, 2026-11-10: \\umail must not rebuild
-  everything). Its bib/apice.bib is decided entry by entry: the entries whose text changes, appears or goes, their crossref children, and the decks citing
+  everything). A .sty change that only adds a class option (its flag, its \\DeclareOption, its own \\if...\\fi
+  block) counts only for the decks naming the option in \\documentclass; the style's version lines never count
+  (2026-11-14: bbs must not rebuild everything). Its bib/apice.bib is decided entry by entry: the entries whose text changes, appears or goes, their crossref children, and the decks citing
   them in bib/cites/<deck>.keys. Its pool.bib never counts: no deck reads it.
 - A repository's own .bib (a course before the shared file) is decided the same way, entry by entry.
 - .latexmkrc, .gitlab-ci.yml, .gitmodules: every deck. A deck with no deps/<deck>.files: built, whatever changed.
@@ -115,6 +117,50 @@ def definitions(text):
     return defs, ' '.join(''.join(rest).split())
 
 
+VERSION = re.compile(r'^\\newcommand\{\\style(?:major|minor|patch)\}\{[^}]*\}[ \t]*$', re.M)
+
+
+def unversioned(text):
+    """the text without the style's version lines: a release number changes no deck's page (2026-11-14)"""
+    return VERSION.sub('', text or '')
+
+
+def option_additions(old, new):
+    """the class options a .sty change only adds (2026-11-14, bbs): every existing line kept, each inserted run of lines
+    either declaring a new option or a new flag, setting or reading one, or a whole \\if<new flag>...\\fi block.
+    None: the change does more."""
+    strip = lambda t: [l.strip() for l in (re.sub(r'(?<!\\)%.*', '', x) for x in unversioned(t).split('\n')) if l.strip()]
+    a, b = strip(old), strip(new)
+    opts = set(re.findall(r'\\DeclareOption\{([^}]+)\}', '\n'.join(b))) - set(re.findall(r'\\DeclareOption\{([^}]+)\}', '\n'.join(a)))
+    flags = set(re.findall(r'\\newif\\if(\S+)', '\n'.join(b))) - set(re.findall(r'\\newif\\if(\S+)', '\n'.join(a)))
+    if not opts or not flags: return None
+    mine = re.compile(r'\\DeclareOption\{(?:%s)\}|\\(?:newif\\if|if)(?:%s)(?![A-Za-z@])|\\(?:%s)(?:true|false)(?![A-Za-z@])'
+                      % ('|'.join(map(re.escape, opts)), '|'.join(map(re.escape, flags)), '|'.join(map(re.escape, flags))))
+    iff = re.compile(r'\\if(?:%s)(?![A-Za-z@])' % '|'.join(map(re.escape, flags)))
+    kept, k = [], 0
+    while k < len(b):                        # the new file less what the options add: it must be the old file
+        if iff.match(b[k]):                  # a whole \\if<new flag>...\\fi block, nested \\if counted
+            depth = 0
+            while k < len(b):
+                depth += len(re.findall(r'\\if[A-Za-z@]*', b[k])) - len(re.findall(r'\\fi(?![A-Za-z@])', b[k]))
+                k += 1
+                if depth <= 0: break
+            continue
+        if not mine.search(b[k]): kept.append(b[k])
+        k += 1
+    if kept != a: return None
+    return opts
+
+
+def using_option(opts):
+    """the decks whose \\documentclass options name one of the options"""
+    out = set()
+    for d in decks():
+        m = re.search(r'^[^%\n]*\\documentclass\[([^\]]*)\]', Path(f'tex/{d}.tex').read_text(errors='replace'), re.M)
+        if m and set(o.strip() for o in m.group(1).split(',')) & opts: out.add(d)
+    return out
+
+
 def additions(old, new):
     """the names a .sty change only adds; None: the change does more (a redefinition, any other line)"""
     (od, orest), (nd, nrest) = definitions(old), definitions(new)
@@ -212,8 +258,13 @@ def touched(before):
             if f.endswith('.bst'):              # new entry types only: no deck prints otherwise; the decks citing an
                 if bst_additions(a, b) is not None: files.discard(f)   # entry of a new type are marked by apice.bib
                 continue
-            added = additions(a, b)
-            if added is None: continue
+            added = additions(unversioned(a), unversioned(b))
+            if added is None:
+                opts = option_additions(a, b)
+                if opts is None: continue
+                files.discard(f)
+                mark(using_option(opts), f'{f} adds the option(s) ' + ', '.join(sorted(opts)))
+                continue
             files.discard(f)
             mark(using(added), f'{f} adds ' + ', '.join(sorted(added)))
         changed |= files
