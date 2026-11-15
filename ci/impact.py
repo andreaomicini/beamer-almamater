@@ -40,6 +40,18 @@ def git(*a, cwd=None):
     return r.stdout if r.returncode == 0 else None
 
 
+def names(*a, cwd=None):
+    """git's changed paths as they are: -z, so a name with spaces or accents comes whole, unquoted (2026-11-15:
+    'html/C1 – Visions of IoT I. Humans.html' was split at its spaces and its dash came octal-quoted)"""
+    out = git(*a, '-z', cwd=cwd)
+    return None if out is None else [n for n in out.split('\0') if n]
+
+
+def lines(p):
+    """a deps/<deck>.files list: one path per line, spaces kept"""
+    return [l for l in p.read_text(encoding='utf-8').splitlines() if l.strip()]
+
+
 def decks():
     return sorted(p.stem for p in Path('tex').glob('*.tex'))
 
@@ -206,7 +218,7 @@ def using(names):
         return seen[f]
     for d in decks():
         deps = Path(f'deps/{d}.files')
-        read = [f'tex/{d}.tex'] + (deps.read_text().split() if deps.exists() else [])
+        read = [f'tex/{d}.tex'] + (lines(deps) if deps.exists() else [])
         if not deps.exists() or any(uses(f) for f in read): out.add(d)
     return out
 
@@ -225,9 +237,9 @@ def style_files(old_pin, new_pin):
     with tempfile.TemporaryDirectory() as d:
         if git('clone', '-q', '--filter=blob:none', '--no-checkout', url, d) is None:
             return None, None, None, None
-        names = git('diff', '--name-only', old_pin, new_pin, cwd=d)
-        if names is None: return None, None, None, None
-        files = {'.style/' + n for n in names.split()}
+        ns = names('diff', '--name-only', old_pin, new_pin, cwd=d)
+        if ns is None: return None, None, None, None
+        files = {'.style/' + n for n in ns}
         bib = '.style/bib/apice.bib'
         old = git('show', f'{old_pin}:bib/apice.bib', cwd=d) if bib in files else None
         new = git('show', f'{new_pin}:bib/apice.bib', cwd=d) if bib in files else None
@@ -239,9 +251,9 @@ def style_files(old_pin, new_pin):
 def touched(before):
     if not before: return {d: 'first push or a pipeline run by hand: nothing built yet' for d in decks()}
     base = before if before and git('cat-file', '-e', before + '^{commit}') is not None else 'HEAD~1'
-    names = git('diff', '--name-only', base, 'HEAD')
-    if names is None: return {d: 'no history to compare with' for d in decks()}
-    changed = set(names.split())
+    ns = names('diff', '--name-only', base, 'HEAD')
+    if ns is None: return {d: 'no history to compare with' for d in decks()}
+    changed = set(ns)
     out = {}
     def mark(ds, why):
         for d in ds: out.setdefault(d, why)
@@ -286,7 +298,7 @@ def touched(before):
             if files or changed - {c for c in changed if c.startswith(('deps/', 'bib/cites/'))}:
                 mark([d], 'no deps/%s.files' % d)
             continue
-        hit = files & set(f.read_text().split())
+        hit = files & set(lines(f))
         if hit: mark([d], 'reads ' + ', '.join(sorted(hit))[:200])
     return out
 
@@ -297,7 +309,7 @@ def urlcheck(d):
     urls = Path(__file__).resolve().parent.parent / 'check' / 'urls.py'
     if not urls.exists(): return ''
     deps = Path(f'deps/{d}.files')
-    files = [f'tex/{d}.tex'] + [f for f in (deps.read_text().split() if deps.exists() else [])
+    files = [f'tex/{d}.tex'] + [f for f in (lines(deps) if deps.exists() else [])
                                  if f.endswith(('.sty', '.tex')) and not f.startswith('.style/')
                                  and Path(f).is_file() and not Path(f).is_symlink() and f != f'tex/{d}.tex']
     r = subprocess.run([sys.executable, str(urls), *files], capture_output=True, text=True)

@@ -94,3 +94,4 @@ impact-test:
   script:
     - python3 ci/test/impact-bst-test.py
     - python3 ci/test/impact-option-test.py
+    - python3 ci/test/impact-paths-test.py
