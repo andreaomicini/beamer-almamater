@@ -222,6 +222,11 @@ def integrity():
         for s, e, t, k in entries(text):
             if k.lower() in keys: problems.append(f'key {k} in {name} and {keys[k.lower()]} (BibTeX ignores case)')
             keys[k.lower()] = name
+    recs = {}
+    for s, e, t, k in entries(a):                       # one entry per record (2026-11-15: Dennett's chapter under two keys)
+        r = field(a[s:e], 'apice')
+        if r and r in recs: problems.append(f'{k}: record {r} already under key {recs[r]}')
+        recs.setdefault(r, k) if r else None
     for s, e, t, k in entries(a):
         x = field(a[s:e], 'crossref')
         if x and x.lower() not in keys: problems.append(f'{k}: crossref {x} missing')
