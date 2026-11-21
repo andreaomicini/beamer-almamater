@@ -6,7 +6,7 @@
 %% and the link helpers \smallurl and \expandurl.
 %% Load FIRST, ahead of course.sty, names.sty (if any) and the subject's .sty.
 %% Shared by every course through .style/decks/; usage in beamer-almamater/decks/README.md.
-\ProvidesPackage{courses}[2026/11/01 Generic deck mechanisms for course slides]
+\ProvidesPackage{courses}[2026/11/21 Generic deck mechanisms for course slides]
 %% dealing with font sizes in a relative way
 \usepackage{relsize}
 %% A comma-separated list printed as "a \textbullet\ b \textbullet\ c", each
@@ -94,8 +94,11 @@
 %% The title is EXPANDED first: \detokenize alone writes the characters of a
 %% macro's name, so \title{\talktitlelong} used to land in the file verbatim.
 \newwrite\courses@pdfnamefile
-\AtBeginDocument{%
-	\protected@edef\courses@thetitle{\inserttitle}%
+%% At the end of the document, when acro has made \acs, \acs*… readable as text
+%% (AS 20·21 T4, 2026-11-21: \acs*{respect} named the file "*respect").
+\AtEndDocument{%
+	\begingroup\csname pdfstringdefPreHook\endcsname
+	\protected@xdef\courses@thetitle{\inserttitle}\endgroup
 	\protected@edef\courses@thelabel{\thedecklabel}%
 	\immediate\openout\courses@pdfnamefile=\jobname.pdfname\relax
 	\ifx\courses@thelabel\@empty
@@ -106,15 +109,31 @@
 			\detokenize\expandafter{\courses@thelabel}\detokenize{ – }\detokenize\expandafter{\courses@thetitle}}%
 	\fi
 	\immediate\closeout\courses@pdfnamefile}
+%% The previous run's name file, read back (the /Title is fixed at the first page,
+%% before acro makes \acs* readable; latexmk runs again when the file changes).
+\newread\courses@namein
+\newcommand{\courses@readname}{%
+	\let\courses@prevname\@empty
+	\openin\courses@namein=\jobname.pdfname\relax
+	\ifeof\courses@namein\openin\courses@namein=aux/\jobname.pdfname\relax\fi% the repos' output directory (.latexmkrc)
+	\ifeof\courses@namein\else
+		\begingroup\endlinechar=-1
+		\global\read\courses@namein to\courses@prevname
+		\endgroup
+		\closein\courses@namein
+	\fi}
 %% The same "<label> – <title>" into the PDF /Title, subtitle left out.
 %% Appended to beamer's own hook, not \AtBeginDocument, or beamer's line wins.
 \ifbeamer@autopdfinfo
 	\g@addto@macro\beamer@firstminutepatches{%
 		\begingroup
 			\let\thanks=\@gobble%
+			\courses@readname% the previous run's name file: its title is readable, acronyms included
 			\hypersetup{pdftitle={%
-				\ifx\thedecklabel\@empty\else\thedecklabel\ – \fi
-				\inserttitle}}%
+				\ifx\courses@prevname\@empty
+					\ifx\thedecklabel\@empty\else\thedecklabel\ – \fi
+					\inserttitle
+				\else\courses@prevname\fi}}%
 		\endgroup}
 \fi
 %% Indented quotation for long citations, with possibly a translation. The two
