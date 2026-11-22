@@ -25,3 +25,9 @@ consumer links `img/almabbs-background.pdf` to `.style/almabbs-background.pdf`.
 Version 1.0 (January 2020), the one the FoIoT 2019/2020 decks were built on, is
 tagged `purpleandgold-bbs-1.0` (`foiot1920-slides`); it was committed after 1.1,
 which stays at the tip.
+
+## AMSCesenaPurpleAndGold 1.0
+
+Version 1.0 (May 2019), the one the SA 2018/2019 decks were built on (`sa1819-slides`), is tagged
+`purpleandgold-cesena-1.0`: 1.1 differs by one line, the bibliography item label. It was committed after
+1.1, which stays at the tip.
