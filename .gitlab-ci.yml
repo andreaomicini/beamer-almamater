@@ -1,5 +1,6 @@
 # The branch `history/silverblue` holds a theme of the time, brought from beamer-AMSSilverBlue's cesena branch on 2026-11-08 (almamater:
-# the six styles as one). The decks' history pins it through the tags silverblue-cesena-1.0, silverblue-cesena-1.0-ciatto. This job builds one
+# the six styles as one). The decks' history pins it through the tags silverblue-cesena-1.0, silverblue-cesena-1.0-ciatto,
+# silverblue-cesena-1.0-2017. This job builds one
 # frame on each theme of the branch, so that a change here is checked before any history is rebuilt on it: a TeX
 # error, or a theme read from anywhere but this branch, fails the job.
 

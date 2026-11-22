@@ -16,7 +16,7 @@ The theme loads its seal as `img/almacesena-background`, so a consumer links
 `img/almacesena-background.pdf` to `.style/almacesena-background.pdf`. The
 bibliography style of the time was LaTeX's own `apalike`, not `apalike-AMS`.
 
-Two tags, one per variant:
+Three tags, one per variant:
 
 - `cesena-1.0` — the style as Andrea had it, loading the seal from `img/`.
 - `cesena-1.0-ciatto` — Giovanni Ciatto's copy, used for his deck of 30 May
@@ -24,4 +24,10 @@ Two tags, one per variant:
   Autonomous Systems course), the seed of the tutorial: the seal from
   `./res/img/` (a consumer links `res/img/almacesena-background.pdf` instead),
   numeric labels in the bibliography (`\insertbiblabel`), and `\hhref` without
-  its light twin `\hhhref`. The branch head carries this variant.
+  its light twin `\hhhref`.
+- `cesena-1.0-2017` — the copy in Andrea's course folders of 2017/18 and 2018/19
+  (`corsi/…/SD 2017:2018/slides/`, 15 Aug 2017; the SD 2018:2019 copy is a
+  re-save of Jan 2019 differing by one space in the RCS line): abstract
+  colours added, `\hhref` and `\hhhref` gone (the decks' `.sty` has its own),
+  the seal from `img/`. Pinned by `sd1819-slides`' history. The branch head
+  carries this variant.
