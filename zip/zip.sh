@@ -120,6 +120,11 @@ cp -R "$dir" "$work/test"
 	unset TEXINPUTS BIBINPUTS BSTINPUTS
 	export TEXMFHOME="$work/texmf"
 	pdflatex -interaction=nonstopmode "$deck" >/dev/null || true
+	## a citation typeset only from the second pass (in a section's long title, read back from .toc/.nav: ISE 21·22 L5,
+	## 2026-11-23) is not in .aux yet: one pass more before bibtex
+	if grep -q '^\\bibdata' "$deck.aux" && ! grep -q '^\\citation' "$deck.aux"; then
+		pdflatex -interaction=nonstopmode "$deck" >/dev/null || true
+	fi
 	if grep -q '^\\bibdata' "$deck.aux"; then bibtex "$deck" >/dev/null || die "bibtex fails in the flat folder"; fi
 	## rerun until .aux and .nav settle: beamer's frame total changes them without asking for a rerun
 	for i in 1 2 3 4 5; do
