@@ -228,6 +228,8 @@ def integrity():
         if r and r in recs: problems.append(f'{k}: record {r} already under key {recs[r]}')
         recs.setdefault(r, k) if r else None
     for s, e, t, k in entries(a):
+        body = re.sub(r'\\[{}]', '', a[s:e])           # unbalanced braces swallow fields (2026-11-23, s3-as2021m1 title)
+        if body.count('{') != body.count('}'): problems.append(f'{k}: unbalanced braces ({body.count("{")} {{ vs {body.count("}")} }})')
         x = field(a[s:e], 'crossref')
         if x and x.lower() not in keys: problems.append(f'{k}: crossref {x} missing')
         for line in a[s:e].splitlines():                 # TeX reads % as a comment: a broken .bbl (2026-11-09, L7)
