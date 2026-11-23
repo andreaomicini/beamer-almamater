@@ -11,7 +11,7 @@ The same script is in every AMS style and template repository (ci/release.py).
 
 Usage (in the CI, from the project root):  release.py <source> <file> <description>
 """
-import datetime, json, os, subprocess, sys, urllib.parse, urllib.request
+import datetime, json, os, subprocess, sys, time, urllib.error, urllib.parse, urllib.request
 
 source, path, what = sys.argv[1], sys.argv[2], sys.argv[3]
 here = os.path.dirname(os.path.abspath(__file__))
@@ -47,6 +47,25 @@ print(f"GitLab release {tag}: {os.environ['CI_PROJECT_URL']}/-/releases/{tag}")
 repo = os.environ.get('GITHUB_REPO', f"andreaomicini/{os.environ['CI_PROJECT_NAME']}")
 gh = {'Authorization': f"Bearer {os.environ['GITHUB_TOKEN']}", 'Accept': 'application/vnd.github+json',
       'X-GitHub-Api-Version': '2022-11-28'}
+
+
+def wait_on_github(limit=int(os.environ.get('GITHUB_WAIT', 600)), step=15):
+    """GitHub gets the commit from GitLab's push mirror, at most every 5 minutes: wait for it, or the release
+    would be refused (target_commitish unknown). Returns the seconds waited; exits if it never arrives."""
+    waited = 0
+    while True:
+        try:
+            call('GET', f"https://api.github.com/repos/{repo}/commits/{sha}", gh)
+            return waited
+        except urllib.error.HTTPError as e:
+            if e.code not in (404, 422):
+                raise
+        if waited >= limit:
+            sys.exit(f"GitHub has no commit {sha} after {limit} s: see the push mirror in Settings > Repository")
+        time.sleep(step); waited += step
+
+
+print(f"GitHub has {sha[:8]} after {wait_on_github()} s")
 rel = call('POST', f"https://api.github.com/repos/{repo}/releases", {**gh, 'Content-Type': 'application/json'},
            json.dumps({'tag_name': tag, 'target_commitish': sha, 'name': tag, 'body': notes}).encode())
 call('POST', f"https://uploads.github.com/repos/{repo}/releases/{rel['id']}/assets?name={urllib.parse.quote(name)}",
