@@ -284,7 +284,7 @@ def check(keys):
 def pull(keys):
     a = open(APICE).read(); out, last, n = [], 0, 0
     for s, e, t, k in entries(a):
-        rec = field(a[s:e], 'apice')
+        rec = (field(a[s:e], 'apice') or '').replace('/', '.')      # a deck's apice field is <Course>/<Label>
         if rec and ('--all' in keys or k in keys):
             new = from_record(rec, k)
             if norm(new) != norm(a[s:e]): out.append(a[last:s] + new); last = e; n += 1; print(f'pulled {k} ({rec})')
@@ -294,7 +294,7 @@ def pull(keys):
 
 def add(rec, key=None):
     a = open(APICE).read()
-    if any(field(a[s:e], 'apice') == rec for s, e, t, k in entries(a)): sys.exit(f'sync: {rec} is already in apice.bib')
+    if any((field(a[s:e], 'apice') or '').replace('/', '.') == rec.replace('/', '.') for s, e, t, k in entries(a)): sys.exit(f'sync: {rec} is already in apice.bib')
     new = from_record(rec, key or 'KEY')
     if not key: key = re.match(r'@\w+\{([^,]*),', record(rec)[1] or record_live(rec)[1]).group(1); new = new.replace('{KEY,', '{%s,' % key, 1)
     open(APICE, 'w').write(a.rstrip('\n') + '\n\n' + new + '\n')
