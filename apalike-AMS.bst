@@ -873,6 +873,7 @@ FUNCTION {mastersthesis}
   new.block
   "Master's thesis" format.thesis.type output.nonnull
   school "school" output.check
+  institution output
   address output
   new.block
   format.supervision output
@@ -1137,6 +1138,7 @@ FUNCTION {phdthesis}
   new.block
   "PhD thesis" format.thesis.type output.nonnull
   school "school" output.check
+  institution output
   address output
   new.block
   format.supervision output
