@@ -16,7 +16,7 @@ The theme loads its seal as `img/almacesena-background`, so a consumer links
 `img/almacesena-background.pdf` to `.style/almacesena-background.pdf`. The
 bibliography style of the time was LaTeX's own `apalike`, not `apalike-AMS`.
 
-Three tags, one per variant:
+Four tags, one per variant:
 
 - `cesena-1.0` — the style as Andrea had it, loading the seal from `img/`.
 - `cesena-1.0-ciatto` — Giovanni Ciatto's copy, used for his deck of 30 May
@@ -29,5 +29,8 @@ Three tags, one per variant:
   (`corsi/…/SD 2017:2018/slides/`, 15 Aug 2017; the SD 2018:2019 copy is a
   re-save of Jan 2019 differing by one space in the RCS line): abstract
   colours added, `\hhref` and `\hhhref` gone (the decks' `.sty` has its own),
-  the seal from `img/`. Pinned by `sd1819-slides`' history. The branch head
-  carries this variant.
+  the seal from `img/`. Pinned by `sd1819-slides`' history.
+- `cesena-1.0-2016` — the copy in Andrea's SD 2016:2017 folder (29 Sep 2016):
+  `cesena-1.0` without `\hhref` and `\hhhref`, no abstract colours yet, the seal
+  from `img/`. Pinned by `sd1617-slides`' history. The branch head carries this
+  variant.
