@@ -20,7 +20,7 @@ timeout 900 node $C/shot.mjs 2>$C/wk.err || {
   echo "compare.zsh: WebKit failed, see $C/wk.err" >&2; exit 1 }
 # a private profile: an open Firefox holds the usual one, and a headless run on it makes no picture; a page Firefox did not
 # save is tried up to 3 times (2026-11-22: under load one page in a deck went missing now and then, the page itself fine)
-[ -n "$SKIPFF" ] || { P=$(mktemp -d); for i in $(seq 1 $n); do j=$(printf "%0${#n}d" $i); for k in 1 2 3; do timeout 60 /Applications/Firefox.app/Contents/MacOS/firefox --headless -no-remote -profile $P --window-size=$w,$h --screenshot "$PWD/$C/ff-$j.png" "$url#$i" >/dev/null 2>&1; [ -s "$C/ff-$j.png" ] && break; done; done; rm -rf $P; }
+[ -n "$SKIPFF" ] || { P=$(mktemp -d); for i in $(seq 1 $n); do j=$(printf "%0${#n}d" $i); for k in 1 2 3; do MOZ_CRASHREPORTER_DISABLE=1 timeout 60 /Applications/Firefox.app/Contents/MacOS/firefox --headless -no-remote -profile $P --window-size=$w,$h --screenshot "$PWD/$C/ff-$j.png" "$url#$i" >/dev/null 2>&1; [ -s "$C/ff-$j.png" ] && break; done; done; rm -rf $P; }
 engines=(wk); [ -z "$SKIPFF" ] && engines+=(ff)
 for e in $engines; do k=$(ls $C/$e-*.png 2>/dev/null | wc -l); (( k == n )) || { echo "compare.zsh: $e drew $k of $n pages" >&2; exit 1 }; done
 for e in $engines; do
