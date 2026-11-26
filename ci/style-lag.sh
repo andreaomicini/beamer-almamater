@@ -14,11 +14,11 @@ pin=$(git ls-tree HEAD .style | awk '{print $3}')
 tmp=$(mktemp -d)
 git clone -q --filter=blob:none --no-checkout "$url" "$tmp/style"
 top=$(git -C "$tmp/style" rev-parse origin/main)
-n=$(git -C "$tmp/style" rev-list --count "$pin..$top" -- . ':(exclude)html' ':(exclude)ci' ':(exclude)check' ':(exclude)zip' ':(exclude)logo' ':(exclude)icon' ':(exclude)bib' ':(exclude).gitignore' ':(exclude).github' ':(exclude)*.md')
+n=$(git -C "$tmp/style" rev-list --count "$pin..$top" -- . ':(exclude)html' ':(exclude)ci' ':(exclude)check' ':(exclude)zip' ':(exclude)logo' ':(exclude)icon' ':(exclude)bib' ':(exclude).gitignore' ':(exclude).gitlab-ci.yml' ':(exclude).github' ':(exclude)*.md')
 name=$(basename "$url" .git)
 if [ "$n" -gt 0 ]; then
   echo "style-lag: .style is $n commit(s) of $name behind its main (${pin%"${pin#???????}"} -> ${top%"${top#???????}"}):"
-  git -C "$tmp/style" log --oneline "$pin..$top" -- . ':(exclude)html' ':(exclude)ci' ':(exclude)check' ':(exclude)zip' ':(exclude)logo' ':(exclude)icon' ':(exclude)bib' ':(exclude).gitignore' ':(exclude).github' ':(exclude)*.md' | sed 's/^/  /'
+  git -C "$tmp/style" log --oneline "$pin..$top" -- . ':(exclude)html' ':(exclude)ci' ':(exclude)check' ':(exclude)zip' ':(exclude)logo' ':(exclude)icon' ':(exclude)bib' ':(exclude).gitignore' ':(exclude).gitlab-ci.yml' ':(exclude).github' ':(exclude)*.md' | sed 's/^/  /'
   echo "Move it: git submodule update --remote .style, rebuild, CI, push, republish."
   exit 3
 fi
