@@ -14,7 +14,9 @@ built when something it reads changed, and only then.
   using a new name, in their .tex or in a repository file they read (Andrea, 2026-11-10: \\umail must not rebuild
   everything). A .sty change that only adds a class option (its flag, its \\DeclareOption, its own \\if...\\fi
   block) counts only for the decks naming the option in \\documentclass; the style's version lines never count
-  (2026-11-14: bbs must not rebuild everything). Its bib/apice.bib is decided entry by entry: the entries whose text changes, appears or goes, their crossref children, and the decks citing
+  (2026-11-14: bbs must not rebuild everything). A .bst change that only adds FUNCTIONs counts for no deck; one that only
+  changes FUNCTIONs counts for the decks citing an entry of a type that calls a changed one, unless a FUNCTION run for
+  every entry is touched (2026-11-27). Its bib/apice.bib is decided entry by entry: the entries whose type or text changes, appears or goes, their crossref children, and the decks citing
   them in bib/cites/<deck>.keys. Its pool.bib never counts: no deck reads it.
 - A repository's own .bib (a course before the shared file) is decided the same way, entry by entry.
 - .latexmkrc, .gitlab-ci.yml, .gitmodules: every deck. A deck with no deps/<deck>.files: built, whatever changed.
@@ -74,7 +76,8 @@ def parse(text):
         elif kind != 'comment':
             key = body.split(',', 1)[0].strip().lower()
             cr = re.search(r'^\s*crossref\s*=\s*[{"]([^}"]*)[}"]', body, re.M | re.I)
-            entries[key] = (re.sub(r'\s+', ' ', body).strip(), cr.group(1).strip().lower() if cr else None)
+            # the entry type is part of the entry: @article to @incollection prints otherwise (2026-11-27, bmc-advcomp58)
+            entries[key] = (kind + ' ' + re.sub(r'\s+', ' ', body).strip(), cr.group(1).strip().lower() if cr else None)
     return entries, strings, preamble
 
 
@@ -204,6 +207,64 @@ def bst_additions(old, new):
     return added if [b for b in n if not (b[0] == 'FUNCTION' and b[1] in added)] == o else None
 
 
+def bst_changed_types(old, new):
+    """the entry types a .bst change can print differently, as (types, functions); None: it may touch every entry.
+    Only FUNCTIONs changed (every other block the same, no FUNCTION added or gone): a FUNCTION is touched when it
+    changed or calls a touched one (a 'name is a call too, call.type$ calls every FUNCTION); if one run for every
+    entry or for the whole list (EXECUTE, ITERATE, REVERSE, but call.type$) is touched, None; else the touched
+    FUNCTIONs are the entry types that print otherwise, default.type standing for the types with no FUNCTION of their
+    own (2026-11-27: institution after a thesis's school must not rebuild every deck)"""
+    o, n = bst_blocks(old), bst_blocks(new)
+    if [b for b in o if b[0] != 'FUNCTION'] != [b for b in n if b[0] != 'FUNCTION']: return None
+    of = {k.lower(): t for c, k, t in o if c == 'FUNCTION'}
+    nf = {k.lower(): t for c, k, t in n if c == 'FUNCTION'}
+    if of.keys() != nf.keys(): return None
+    calls = {}
+    for k, t in nf.items():
+        body = re.sub(r'"[^"]*"', ' ', re.sub(r'^\w+\s*\{[^}]*\}', '', t))
+        toks = {x.lower() for x in re.findall(r"'?([^\s{}']+)", body)}
+        calls[k] = set(nf) if 'call.type$' in toks else toks & nf.keys()
+    hit = {k for k in nf if of[k] != nf[k]}
+    grew = True
+    while grew:
+        more = {k for k, c in calls.items() if c & hit} - hit
+        hit |= more; grew = bool(more)
+    roots = set()
+    for c, _, t in n:
+        if c in ('EXECUTE', 'ITERATE', 'REVERSE'):
+            roots |= {x.lower() for x in re.findall(r'\{\s*([^}\s]+)\s*\}', t)} - {'call.type$'}
+    if roots & hit: return None
+    return hit, set(nf)
+
+
+def citing_types(types, functions, bibs):
+    """the decks citing an entry (or its crossref parent) of one of the types; a key of no known type, or a deck with no
+    bib/cites/<deck>.keys: built. bibs: the texts the decks read, apice.bib first"""
+    kind, parent = {}, {}
+    for text in bibs:
+        for m in re.finditer(r'@(\w+)\s*[{(]\s*([^,\s]+)\s*,', text or ''):
+            kind.setdefault(m.group(2).lower(), m.group(1).lower())
+        for k, (_, p) in parse(text)[0].items():
+            parent.setdefault(k, p)
+    def touches(k):
+        t = kind.get(k)
+        return t is None or t in types or (t not in functions and 'default.type' in types)
+    out = set()
+    for d in decks():
+        f = Path(f'bib/cites/{d}.keys')
+        if not f.exists(): out.add(d); continue
+        keys = {k.strip().lower() for k in f.read_text().split()}
+        keys |= {parent[k] for k in keys if parent.get(k)}
+        if any(touches(k) for k in keys): out.add(d)
+    return out
+
+
+def own_bibs():
+    """the repository's own .bib files, links into .style and pool.bib aside"""
+    return [p.read_text(encoding='utf-8', errors='replace') for p in sorted(Path('bib').glob('*.bib'))
+            if not p.is_symlink() and p.name != 'pool.bib']
+
+
 def using(names):
     """the decks whose .tex, or a repository file they read, uses one of the names (a command, or an environment)"""
     if not names: return set()
@@ -224,7 +285,8 @@ def using(names):
 
 
 def style_files(old_pin, new_pin):
-    """the files changed between two pins of .style, as .style/<path>, and the two texts of bib/apice.bib"""
+    """the files changed between two pins of .style, as .style/<path>, the two texts of bib/apice.bib when it changed,
+    the .sty and .bst texts, and apice.bib as the new pin has it"""
     url = git('config', '-f', '.gitmodules', 'submodule..style.url').strip()
     if url.startswith('../'):
         import os
@@ -236,16 +298,17 @@ def style_files(old_pin, new_pin):
             url = str(p if p.exists() else p.with_suffix(''))
     with tempfile.TemporaryDirectory() as d:
         if git('clone', '-q', '--filter=blob:none', '--no-checkout', url, d) is None:
-            return None, None, None, None
+            return None, None, None, None, None
         ns = names('diff', '--name-only', old_pin, new_pin, cwd=d)
-        if ns is None: return None, None, None, None
+        if ns is None: return None, None, None, None, None
         files = {'.style/' + n for n in ns}
         bib = '.style/bib/apice.bib'
         old = git('show', f'{old_pin}:bib/apice.bib', cwd=d) if bib in files else None
         new = git('show', f'{new_pin}:bib/apice.bib', cwd=d) if bib in files else None
         sty = {f: (git('show', f'{old_pin}:{f[7:]}', cwd=d) or '', git('show', f'{new_pin}:{f[7:]}', cwd=d) or '')
                for f in files if f.endswith(('.sty', '.bst'))}
-        return files, old, new, sty
+        now = new if new is not None else git('show', f'{new_pin}:bib/apice.bib', cwd=d)
+        return files, old, new, sty, now
 
 
 def touched(before):
@@ -263,12 +326,16 @@ def touched(before):
     if '.style' in changed:
         old_pin = (git('ls-tree', base, '.style') or '').split()
         new_pin = (git('ls-tree', 'HEAD', '.style') or '').split()
-        files, old, new, sty = style_files(old_pin[2], new_pin[2]) if len(old_pin) > 2 and len(new_pin) > 2 else (None,) * 4
+        files, old, new, sty, now = style_files(old_pin[2], new_pin[2]) if len(old_pin) > 2 and len(new_pin) > 2 else (None,) * 5
         if files is None:
             mark(decks(), '.style moved, its changes unreadable'); return out
         for f, (a, b) in sty.items():
             if f.endswith('.bst'):              # new entry types only: no deck prints otherwise; the decks citing an
-                if bst_additions(a, b) is not None: files.discard(f)   # entry of a new type are marked by apice.bib
+                if bst_additions(a, b) is not None: files.discard(f); continue   # entry of a new type: apice.bib's
+                tf = bst_changed_types(a, b)    # changed FUNCTIONs: the decks citing an entry of a type they print
+                if tf is not None:
+                    files.discard(f)
+                    mark(citing_types(*tf, [now] + own_bibs()), f'{f} prints otherwise: ' + ', '.join(sorted(tf[0])))
                 continue
             added = additions(unversioned(a), unversioned(b))
             if added is None:
